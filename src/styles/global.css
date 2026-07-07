@@ -178,3 +178,27 @@ h3 {
   background: var(--color-accent);
   color: white;
 }
+
+.button-link--light {
+  background: #fff;
+  color: var(--color-text);
+  border-color: #fff;
+}
+
+.button-link--light:hover {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.button-link--ghost {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.button-link--ghost:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-color: #fff;
+}

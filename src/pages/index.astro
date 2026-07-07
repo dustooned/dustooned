@@ -1,46 +1,19 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ProjectCard from "../components/ProjectCard.astro";
+import Hero from "../components/Hero.astro";
 import JournalCard from "../components/JournalCard.astro";
 import SectionGatewayCard from "../components/SectionGatewayCard.astro";
 import { contentSlug, withBase } from "../config/content";
 import { EXTERNAL_LINKS } from "../config/site";
 
-const projects = (await getCollection("projects")).sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-const featuredProjects = projects.filter((project) => project.data.featured).slice(0, 6);
 const journal = (await getCollection("journal")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
 ---
 
 <BaseLayout>
+  <Hero />
   <div class="site-shell section-stack">
-    <section class="page-intro">
-      <p>Artist / educator portfolio</p>
-      <h1>Dustooned</h1>
-      <p>Motion, illustration, interactive experiments, journal notes, and teaching work by Dustin / T'.</p>
-    </section>
-
-    <section>
-      <div class="split-heading">
-        <h2>Featured Work</h2>
-      </div>
-      <div class="project-grid">
-        {
-          featuredProjects.map((project) => (
-            <ProjectCard
-              title={project.data.title}
-              href={`/${project.data.section}/${contentSlug(project.id)}`}
-              thumbnail={project.data.thumbnail}
-              description={project.data.description}
-              year={project.data.year}
-              role={project.data.role}
-            />
-          ))
-        }
-      </div>
-    </section>
-
-    <section>
+    <section id="explore">
       <div class="split-heading">
         <h2>Explore</h2>
       </div>
@@ -55,8 +28,8 @@ const journal = (await getCollection("journal")).sort((a, b) => b.data.date.valu
 
     <section>
       <div class="split-heading">
-        <h2>Recent Journal</h2>
-        <a href={withBase("/journal")}>View all</a>
+        <h2>What's New</h2>
+        <a href={withBase("/journal")}>View all journal posts</a>
       </div>
       <div class="journal-grid">
         {

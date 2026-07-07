@@ -1,13 +1,48 @@
+---
+const BUBBLE_COUNT = 18;
+
+function randomBetween(min: number, max: number) {
+  return min + Math.random() * (max - min);
+}
+
+const bubbles = Array.from({ length: BUBBLE_COUNT }, (_, index) => {
+  const parallaxDirection = Math.random() < 0.5 ? -1 : 1;
+  return {
+    tone: index % 2 === 0 ? "a" : "b",
+    size: randomBetween(16, 90),
+    left: randomBetween(-4, 100),
+    duration: randomBetween(20, 46),
+    delay: randomBetween(-40, 0),
+    wobbleDuration: randomBetween(5, 12),
+    wobbleDelay: randomBetween(-10, 0),
+    drift: randomBetween(14, 64),
+    parallax: parallaxDirection * randomBetween(0.3, 1.6),
+    localOpacity: randomBetween(0.55, 1)
+  };
+});
+---
+
+<div class="bubble-field" aria-hidden="true">
+  {
+    bubbles.map((bubble) => (
+      <span
+        class={`bubble bubble--${bubble.tone}`}
+        style={`--size:${bubble.size.toFixed(1)}px; --left:${bubble.left.toFixed(1)}%; --duration:${bubble.duration.toFixed(1)}s; --delay:${bubble.delay.toFixed(1)}s; --wobble-duration:${bubble.wobbleDuration.toFixed(1)}s; --wobble-delay:${bubble.wobbleDelay.toFixed(1)}s; --drift:${bubble.drift.toFixed(1)}px; --parallax:${bubble.parallax.toFixed(2)}; --bubble-local-opacity:${bubble.localOpacity.toFixed(2)};`}
+      />
+    ))
+  }
+</div>
+
 <script>
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const supportsFinePointer = window.matchMedia("(pointer: fine)");
-  const maxOffset = 18;
+  const maxOffset = 46;
   const ease = 0.08;
   let currentOffset = 0;
   let targetOffset = 0;
   let frameId = 0;
 
-  function setBubbleOffset(value) {
+  function setBubbleOffset(value: number) {
     document.documentElement.style.setProperty("--bubble-mouse-x", `${value.toFixed(2)}px`);
   }
 
@@ -29,7 +64,7 @@
     if (!frameId) frameId = window.requestAnimationFrame(tick);
   }
 
-  function handlePointerMove(event) {
+  function handlePointerMove(event: PointerEvent) {
     const progress = event.clientX / window.innerWidth - 0.5;
     targetOffset = progress * maxOffset;
     requestTick();

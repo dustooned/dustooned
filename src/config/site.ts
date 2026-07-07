@@ -14,6 +14,19 @@ export const EXTERNAL_LINKS = {
   education: "https://github.com/dustooned/lbcc-student-work"
 };
 
+// Homepage hero. Drop a real video/gif path into videoSrc when it's ready —
+// until then the hero falls back to an animated placeholder background.
+export const HERO = {
+  eyebrow: "Welcome",
+  title: "Hi, I'm Dustin.",
+  tagline:
+    "Dustooned is a home base for motion, illustration, and interactive work, plus journal notes from the studio and classroom. Look around, or jump straight to what's new.",
+  primaryCta: { label: "See what's new", href: "/journal" },
+  secondaryCta: { label: "Explore sections", href: "#explore" },
+  videoSrc: "",
+  posterImage: ""
+};
+
 export const navItems = [
   { label: "Motion", href: "/motion" },
   { label: "Illustration", href: "/illustration" },

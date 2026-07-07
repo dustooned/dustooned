@@ -113,44 +113,66 @@ body {
   background-size: auto, 42px 42px, 42px 42px, auto;
 }
 
-body::before {
-  content: "";
+.bubble-field {
   position: fixed;
-  inset: -20vh -14vw;
+  inset: -10vh 0;
   z-index: 0;
   pointer-events: none;
   opacity: var(--bubble-opacity);
-  background:
-    radial-gradient(circle at 9% 72%, rgba(212, 63, 36, 0.2) 0 1.1rem, transparent 1.18rem),
-    radial-gradient(circle at 24% 28%, rgba(22, 117, 111, 0.18) 0 1.65rem, transparent 1.75rem),
-    radial-gradient(circle at 44% 82%, rgba(232, 75, 42, 0.16) 0 0.85rem, transparent 0.95rem),
-    radial-gradient(circle at 67% 22%, rgba(22, 117, 111, 0.16) 0 1.25rem, transparent 1.35rem),
-    radial-gradient(circle at 86% 60%, rgba(212, 63, 36, 0.14) 0 2.1rem, transparent 2.22rem);
-  background-position: 0 0, 8rem 10rem, 18rem 4rem, 4rem 18rem, 26rem 14rem;
-  background-size: 34rem 30rem, 42rem 38rem, 28rem 24rem, 46rem 40rem, 52rem 44rem;
   mix-blend-mode: multiply;
-  transform: translate3d(var(--bubble-mouse-x), 0, 0);
-  animation: handmade-bubble-rise 30s linear infinite;
-  will-change: background-position, transform;
+  overflow: hidden;
 }
 
-body > :not(.page-transition-screen) {
+.bubble {
+  position: absolute;
+  left: var(--left);
+  bottom: -12vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  opacity: var(--bubble-local-opacity, 1);
+  transform: translate3d(calc(var(--bubble-mouse-x, 0px) * var(--parallax, 1)), 0, 0);
+  animation:
+    bubble-rise var(--duration) linear var(--delay) infinite,
+    bubble-wobble var(--wobble-duration) ease-in-out var(--wobble-delay) infinite alternate;
+  will-change: transform, bottom, margin-left;
+}
+
+.bubble--a {
+  background: radial-gradient(circle at 35% 30%, rgba(212, 63, 36, 0.55), rgba(212, 63, 36, 0.14) 72%);
+}
+
+.bubble--b {
+  background: radial-gradient(circle at 35% 30%, rgba(22, 117, 111, 0.5), rgba(22, 117, 111, 0.12) 72%);
+}
+
+body > :not(.page-transition-screen):not(.bubble-field) {
   position: relative;
   z-index: 1;
 }
 
-@keyframes handmade-bubble-rise {
+@keyframes bubble-rise {
   from {
-    background-position: 0 0, 8rem 10rem, 18rem 4rem, 4rem 18rem, 26rem 14rem;
+    bottom: -12vh;
   }
 
   to {
-    background-position: 0 -30rem, 8rem -28rem, 18rem -20rem, 4rem -22rem, 26rem -30rem;
+    bottom: 112vh;
+  }
+}
+
+@keyframes bubble-wobble {
+  from {
+    margin-left: calc(var(--drift) * -1);
+  }
+
+  to {
+    margin-left: var(--drift);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body::before {
+  .bubble {
     animation: none;
     transform: none;
   }
@@ -223,7 +245,7 @@ html[data-visual-mood="clean"] body {
   background: var(--color-bg);
 }
 
-html[data-visual-mood="clean"] body::before {
+html[data-visual-mood="clean"] .bubble-field {
   display: none;
 }
 
