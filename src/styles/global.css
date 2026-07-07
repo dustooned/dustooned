@@ -32,37 +32,60 @@ body.menu-open {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
+  overflow: hidden;
+  background: transparent;
+}
+
+.page-transition-screen::before {
+  content: "";
+  position: absolute;
+  left: var(--transition-x, 50vw);
+  top: var(--transition-y, 50vh);
+  width: 170vmax;
+  height: 124vmax;
+  border-radius: 47% 53% 50% 50% / 43% 48% 52% 57%;
   background: #ffffff;
-  opacity: 1;
-  animation: page-fade-in 420ms ease forwards;
+  filter: url("#page-tear-filter");
+  transform: translate(-50%, -50%) rotate(-8deg) scale(1);
+  transform-origin: center;
+  animation: page-tear-in 560ms cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  will-change: transform;
 }
 
-html.is-page-leaving .page-transition-screen {
-  animation: page-fade-out 360ms ease forwards;
+.page-transition-filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
-@keyframes page-fade-in {
+html.is-page-leaving .page-transition-screen::before {
+  animation: page-tear-out 620ms cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes page-tear-in {
   from {
-    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-8deg) scale(1);
   }
 
   to {
-    opacity: 0;
+    transform: translate(-50%, -50%) rotate(9deg) scale(0);
   }
 }
 
-@keyframes page-fade-out {
+@keyframes page-tear-out {
   from {
-    opacity: 0;
+    transform: translate(-50%, -50%) rotate(9deg) scale(0);
   }
 
   to {
-    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-8deg) scale(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .page-transition-screen {
+  .page-transition-screen,
+  .page-transition-filter {
     display: none;
     animation: none;
   }

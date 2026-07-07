@@ -1,7 +1,19 @@
 <div class="page-transition-screen" aria-hidden="true"></div>
+<svg class="page-transition-filter" aria-hidden="true" focusable="false">
+  <filter id="page-tear-filter" x="-18%" y="-18%" width="136%" height="136%">
+    <feTurbulence
+      type="fractalNoise"
+      baseFrequency="0.018 0.055"
+      numOctaves="3"
+      seed="12"
+      result="noise"
+    />
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="42" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
 
 <script>
-  const transitionDuration = 360;
+  const transitionDuration = 620;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function isNormalInternalLink(link) {
@@ -20,12 +32,20 @@
     return destination.origin === current.origin && !samePageHash;
   }
 
-  function leavePage(url) {
+  function setTearOrigin(event) {
+    const x = event instanceof MouseEvent ? event.clientX : window.innerWidth / 2;
+    const y = event instanceof MouseEvent ? event.clientY : window.innerHeight / 2;
+    document.documentElement.style.setProperty("--transition-x", `${x}px`);
+    document.documentElement.style.setProperty("--transition-y", `${y}px`);
+  }
+
+  function leavePage(url, event) {
     if (prefersReducedMotion.matches) {
       window.location.href = url;
       return;
     }
 
+    setTearOrigin(event);
     document.documentElement.classList.add("is-page-leaving");
     window.setTimeout(() => {
       window.location.href = url;
@@ -44,6 +64,6 @@
     if (!isNormalInternalLink(link)) return;
 
     event.preventDefault();
-    leavePage(link.href);
+    leavePage(link.href, event);
   });
 </script>
