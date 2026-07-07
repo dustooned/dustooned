@@ -20,6 +20,28 @@ Important files:
 - `src/styles/moods.css`: handmade visual direction
 - `.github/workflows/deploy.yml`: GitHub Pages deploy workflow
 
+## Next Instruction
+
+Start by verifying the live GitHub Pages deployment.
+
+1. In GitHub, open the repository Actions tab and confirm the latest `Deploy to GitHub Pages` workflow completed successfully.
+2. Open `https://dustooned.github.io/dustooned/`.
+3. Confirm CSS, images, handmade grid, rising bubbles, navigation, and palette page transitions are working on the live site.
+4. If the live site appears as plain/static text, check repository Settings -> Pages and set Source to `GitHub Actions`, not `Deploy from a branch`.
+
+After the live deploy is confirmed, replace one placeholder Illustration project with a real project. This should test:
+
+- real thumbnail
+- real hero image
+- real title
+- short description
+- year
+- role
+- tags
+- optional gallery images
+
+Then run `npm run build`, commit the content change, and push.
+
 ## Current Active Design
 
 The active visual mood is `poster`.

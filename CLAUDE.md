@@ -8,6 +8,13 @@ Start by reading:
 2. `docs/BUILD_CHRONICLE.md`
 3. `docs/DEPLOYMENT.md`
 
+Immediate next task:
+
+1. Verify the live GitHub Pages deployment at `https://dustooned.github.io/dustooned/`.
+2. Confirm the latest `Deploy to GitHub Pages` workflow passed in GitHub Actions.
+3. If the site is plain/static text, set repository Settings -> Pages -> Source to `GitHub Actions`.
+4. Once live deploy is confirmed, replace one placeholder Illustration project with a real project and validate with `npm run build`.
+
 Core sections:
 
 - Motion: internal, YouTube lightbox grid
