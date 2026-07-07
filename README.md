@@ -23,6 +23,34 @@ npm run build
 npm run preview
 ```
 
+## Documentation Map
+
+- `docs/BUILD_CHRONICLE.md`: how the current build came together and why major decisions were made
+- `docs/HANDOFF.md`: current continuation notes for Codex, Claude Code, or another developer
+- `docs/DEPLOYMENT.md`: GitHub Pages and custom-domain deployment notes
+- `docs/CONTENT_MODEL.md`: content collection overview
+- `docs/DESIGN_SYSTEM.md`: CSS/design system overview
+- `docs/ASSET_GUIDE.md`: asset dimensions and folder conventions
+- `docs/MIGRATION_NOTES.md`: notes for migrating the old site later
+
+## Current Deployment
+
+The GitHub Pages deployment must use GitHub Actions, not branch-root publishing.
+
+Temporary URL:
+
+```txt
+https://dustooned.github.io/dustooned/
+```
+
+Final intended URL:
+
+```txt
+https://www.dustooned.com
+```
+
+See `docs/DEPLOYMENT.md` before changing deployment settings.
+
 ## Add a Motion Project
 
 1. Create `public/images/motion/{slug}/`.

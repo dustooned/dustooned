@@ -2,6 +2,12 @@
 
 Build and maintain this as a static-first Astro + MDX portfolio site.
 
+Read these first when resuming:
+
+- `docs/HANDOFF.md`
+- `docs/BUILD_CHRONICLE.md`
+- `docs/DEPLOYMENT.md`
+
 Priorities:
 
 1. Clean architecture
@@ -26,3 +32,5 @@ Before finishing:
 - Run build.
 - Check TypeScript/content schema errors.
 - Update README/TODO if architecture changes.
+- Keep GitHub Pages configured for Actions deployment.
+- Preserve base-path handling for the temporary `/dustooned/` Pages URL.

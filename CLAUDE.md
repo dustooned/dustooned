@@ -2,6 +2,12 @@
 
 This is the Dustooned.com Astro + MDX portfolio rebuild.
 
+Start by reading:
+
+1. `docs/HANDOFF.md`
+2. `docs/BUILD_CHRONICLE.md`
+3. `docs/DEPLOYMENT.md`
+
 Core sections:
 
 - Motion: internal, YouTube lightbox grid
@@ -22,3 +28,21 @@ Important:
 - Keep external links configurable.
 - Do not publish student work without permissions/policy review.
 - Prefer improving content, alt text, migration, and polish over changing the architecture.
+- GitHub Pages must deploy through GitHub Actions, not branch-root publishing.
+- The temporary GitHub Pages URL uses `/dustooned/` as its base path.
+- Preserve reduced-motion support for transitions and background animation.
+
+Current active visual direction:
+
+- `VISUAL_MOOD = "poster"` in `src/config/site.ts`
+- handmade grid background
+- rising bubble layer with passive mouse interaction
+- palette fade page transitions
+- Walter Turncoat display font for large type and card titles
+
+Before finishing any change:
+
+```sh
+npm run build
+git status --short --branch
+```
