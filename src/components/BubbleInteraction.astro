@@ -1,0 +1,48 @@
+<script>
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const supportsFinePointer = window.matchMedia("(pointer: fine)");
+  const maxOffset = 18;
+  const ease = 0.08;
+  let currentOffset = 0;
+  let targetOffset = 0;
+  let frameId = 0;
+
+  function setBubbleOffset(value) {
+    document.documentElement.style.setProperty("--bubble-mouse-x", `${value.toFixed(2)}px`);
+  }
+
+  function tick() {
+    currentOffset += (targetOffset - currentOffset) * ease;
+    setBubbleOffset(currentOffset);
+
+    if (Math.abs(targetOffset - currentOffset) > 0.08) {
+      frameId = window.requestAnimationFrame(tick);
+      return;
+    }
+
+    currentOffset = targetOffset;
+    setBubbleOffset(currentOffset);
+    frameId = 0;
+  }
+
+  function requestTick() {
+    if (!frameId) frameId = window.requestAnimationFrame(tick);
+  }
+
+  function handlePointerMove(event) {
+    const progress = event.clientX / window.innerWidth - 0.5;
+    targetOffset = progress * maxOffset;
+    requestTick();
+  }
+
+  function returnToFlow() {
+    targetOffset = 0;
+    requestTick();
+  }
+
+  if (!prefersReducedMotion.matches && supportsFinePointer.matches) {
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerleave", returnToFlow, { passive: true });
+    window.addEventListener("blur", returnToFlow);
+  }
+</script>

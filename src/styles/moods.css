@@ -20,6 +20,7 @@
   --grid-x-color: rgba(24, 19, 15, 0.04);
   --grid-y-color: rgba(24, 19, 15, 0.035);
   --bubble-opacity: 0;
+  --bubble-mouse-x: 0px;
 }
 
 html[data-visual-mood="clean"] {
@@ -128,7 +129,9 @@ body::before {
   background-position: 0 0, 8rem 10rem, 18rem 4rem, 4rem 18rem, 26rem 14rem;
   background-size: 34rem 30rem, 42rem 38rem, 28rem 24rem, 46rem 40rem, 52rem 44rem;
   mix-blend-mode: multiply;
-  animation: handmade-bubble-rise 42s linear infinite;
+  transform: translate3d(var(--bubble-mouse-x), 0, 0);
+  animation: handmade-bubble-rise 30s linear infinite;
+  will-change: background-position, transform;
 }
 
 body > :not(.page-transition-screen) {

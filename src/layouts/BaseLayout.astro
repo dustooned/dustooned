@@ -3,6 +3,7 @@ import SiteHeader from "../components/SiteHeader.astro";
 import NewsletterSignup from "../components/NewsletterSignup.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import PageTransition from "../components/PageTransition.astro";
+import BubbleInteraction from "../components/BubbleInteraction.astro";
 import { SITE, VISUAL_MOOD } from "../config/site";
 import "../styles/global.css";
 
@@ -24,6 +25,7 @@ const pageTitle = title ? `${title} | ${SITE.title}` : SITE.title;
     <title>{pageTitle}</title>
   </head>
   <body>
+    <BubbleInteraction />
     <PageTransition />
     <SiteHeader />
     <main class="page-main">
