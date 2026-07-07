@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../config/content";
+
 type Props = {
   title: string;
   href: string;
@@ -16,11 +18,11 @@ const formattedDate = date.toLocaleDateString("en-US", {
 });
 ---
 
-<a class="card journal-card" href={href}>
+<a class="card journal-card" href={withBase(href)}>
   {
     thumbnail && (
       <span class="card__media">
-        <img src={thumbnail} alt={`${title} thumbnail`} loading="lazy" />
+        <img src={withBase(thumbnail)} alt={`${title} thumbnail`} loading="lazy" />
       </span>
     )
   }

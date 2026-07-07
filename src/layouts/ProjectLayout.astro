@@ -4,6 +4,7 @@ import BaseLayout from "./BaseLayout.astro";
 import ExternalLinkButton from "../components/ExternalLinkButton.astro";
 import MediaGallery from "../components/MediaGallery.astro";
 import TagList from "../components/TagList.astro";
+import { withBase } from "../config/content";
 
 type Props = {
   entry: CollectionEntry<"projects">;
@@ -31,7 +32,7 @@ const heroAspect = data.heroAspect ?? "16:9";
       data.hero && (
         <img
           class="project-hero__image"
-          src={data.hero}
+          src={withBase(data.hero)}
           alt={`${data.title} project hero`}
           data-aspect={heroAspect === "auto" ? undefined : heroAspect}
         />

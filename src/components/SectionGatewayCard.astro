@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../config/content";
+
 type Props = {
   title: string;
   href: string;
@@ -9,7 +11,7 @@ type Props = {
 const { title, href, description, external = false } = Astro.props;
 ---
 
-<a class="card gateway-card" href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
+<a class="card gateway-card" href={external ? href : withBase(href)} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
   <span class="card__body">
     <span class="card__kicker">{external ? "External" : "Section"}</span>
     <span class="card__title">

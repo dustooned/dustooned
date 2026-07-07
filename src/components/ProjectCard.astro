@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../config/content";
+
 type Props = {
   title: string;
   href?: string;
@@ -38,7 +40,7 @@ const {
       data-video-url={videoUrl}
     >
       <span class="card__media">
-        <img src={thumbnail} alt={`${title} thumbnail`} loading="lazy" />
+        <img src={withBase(thumbnail)} alt={`${title} thumbnail`} loading="lazy" />
       </span>
       <span class="card__body">
         <span class="card__meta">{[year, role].filter(Boolean).join(" / ")}</span>
@@ -47,9 +49,9 @@ const {
       </span>
     </button>
   ) : (
-    <a class="card project-card" href={href}>
+    <a class="card project-card" href={withBase(href)}>
       <span class="card__media">
-        <img src={thumbnail} alt={`${title} thumbnail`} loading="lazy" />
+        <img src={withBase(thumbnail)} alt={`${title} thumbnail`} loading="lazy" />
       </span>
       <span class="card__body">
         <span class="card__meta">{[year, role].filter(Boolean).join(" / ")}</span>

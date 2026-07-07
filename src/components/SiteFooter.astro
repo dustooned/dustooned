@@ -1,5 +1,6 @@
 ---
 import { navItems, SITE } from "../config/site";
+import { withBase } from "../config/content";
 const year = new Date().getFullYear();
 ---
 
@@ -13,7 +14,7 @@ const year = new Date().getFullYear();
     <nav class="footer-links" aria-label="Footer navigation">
       {
         navItems.map((item) => (
-          <a href={item.href} target={item.external ? "_blank" : undefined} rel={item.external ? "noopener noreferrer" : undefined}>
+          <a href={item.external ? item.href : withBase(item.href)} target={item.external ? "_blank" : undefined} rel={item.external ? "noopener noreferrer" : undefined}>
             {item.label}
             {item.external && <span class="external-indicator" aria-hidden="true">&nearr;</span>}
           </a>

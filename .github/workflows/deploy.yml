@@ -32,6 +32,9 @@ jobs:
         run: npm ci
 
       - name: Build site
+        env:
+          SITE_URL: https://dustooned.github.io
+          BASE_PATH: /dustooned
         run: npm run build
 
       - name: Upload Pages artifact

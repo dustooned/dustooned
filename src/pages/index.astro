@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import JournalCard from "../components/JournalCard.astro";
 import SectionGatewayCard from "../components/SectionGatewayCard.astro";
-import { contentSlug } from "../config/content";
+import { contentSlug, withBase } from "../config/content";
 import { EXTERNAL_LINKS } from "../config/site";
 
 const projects = (await getCollection("projects")).sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
@@ -56,7 +56,7 @@ const journal = (await getCollection("journal")).sort((a, b) => b.data.date.valu
     <section>
       <div class="split-heading">
         <h2>Recent Journal</h2>
-        <a href="/journal">View all</a>
+        <a href={withBase("/journal")}>View all</a>
       </div>
       <div class="journal-grid">
         {
