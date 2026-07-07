@@ -1,0 +1,74 @@
+<div class="motion-lightbox" hidden data-motion-lightbox role="dialog" aria-modal="true" aria-labelledby="motion-lightbox-title">
+  <div class="motion-lightbox__backdrop" data-motion-close></div>
+  <section class="motion-lightbox__panel">
+    <button class="motion-lightbox__close" type="button" data-motion-close aria-label="Close video">Close</button>
+    <div class="motion-lightbox__media">
+      <iframe data-motion-iframe title="Motion project video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="motion-lightbox__body">
+      <h2 id="motion-lightbox-title" data-motion-title></h2>
+      <p data-motion-description></p>
+      <p data-motion-meta></p>
+      <p data-motion-tags></p>
+    </div>
+  </section>
+</div>
+
+<script>
+  const lightbox = document.querySelector("[data-motion-lightbox]");
+  const iframe = document.querySelector("[data-motion-iframe]");
+  const title = document.querySelector("[data-motion-title]");
+  const description = document.querySelector("[data-motion-description]");
+  const meta = document.querySelector("[data-motion-meta]");
+  const tags = document.querySelector("[data-motion-tags]");
+  const closeButtons = document.querySelectorAll("[data-motion-close]");
+  let lastTrigger = null;
+
+  function youtubeEmbedUrl(url) {
+    try {
+      const parsed = new URL(url);
+      const id = parsed.hostname.includes("youtu.be")
+        ? parsed.pathname.replace("/", "")
+        : parsed.searchParams.get("v");
+      return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : url;
+    } catch {
+      return "";
+    }
+  }
+
+  function setText(element, value) {
+    if (element instanceof HTMLElement) element.textContent = value || "";
+  }
+
+  function closeLightbox() {
+    if (!(lightbox instanceof HTMLElement) || !(iframe instanceof HTMLIFrameElement)) return;
+    lightbox.hidden = true;
+    iframe.removeAttribute("src");
+    document.body.classList.remove("menu-open");
+    if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
+  }
+
+  document.querySelectorAll("[data-motion-trigger]").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      if (!(lightbox instanceof HTMLElement) || !(iframe instanceof HTMLIFrameElement)) return;
+      lastTrigger = trigger;
+      const triggerElement = trigger instanceof HTMLElement ? trigger : null;
+      const dataset = triggerElement?.dataset;
+      setText(title, dataset?.title);
+      setText(description, dataset?.description);
+      setText(meta, [dataset?.year, dataset?.role].filter(Boolean).join(" / "));
+      setText(tags, dataset?.tags);
+      iframe.src = youtubeEmbedUrl(dataset?.videoUrl || "");
+      lightbox.hidden = false;
+      document.body.classList.add("menu-open");
+      const closeButton = lightbox.querySelector("[data-motion-close]");
+      if (closeButton instanceof HTMLElement) closeButton.focus();
+    });
+  });
+
+  closeButtons.forEach((button) => button.addEventListener("click", closeLightbox));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLightbox();
+  });
+</script>

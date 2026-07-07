@@ -1,0 +1,19 @@
+{
+  "name": "dustooned-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^7.0.2",
+    "astro": "^7.0.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

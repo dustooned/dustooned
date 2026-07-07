@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageIntro from "../components/PageIntro.astro";
+import ProjectGrid from "../components/ProjectGrid.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import MotionLightbox from "../components/MotionLightbox.astro";
+
+const projects = (await getCollection("projects", ({ data }) => data.section === "motion")).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
+);
+---
+
+<BaseLayout title="Motion" description="Animation, film, loops, and motion experiments.">
+  <div class="site-shell">
+    <PageIntro title="Motion" description="Animation, film, loops, and motion experiments." />
+    <ProjectGrid>
+      {
+        projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            thumbnail={project.data.thumbnail}
+            description={project.data.description}
+            year={project.data.year}
+            role={project.data.role}
+            tags={project.data.tags}
+            isMotion
+            videoUrl={project.data.videoUrl}
+          />
+        ))
+      }
+    </ProjectGrid>
+  </div>
+  <MotionLightbox />
+</BaseLayout>

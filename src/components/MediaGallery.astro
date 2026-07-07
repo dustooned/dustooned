@@ -1,0 +1,16 @@
+---
+type Props = {
+  images?: string[];
+  title?: string;
+};
+
+const { images = [], title = "Project" } = Astro.props;
+---
+
+{
+  images.length > 0 && (
+    <section class="media-gallery" aria-label={`${title} gallery`}>
+      {images.map((image, index) => <img src={image} alt={`${title} gallery image ${index + 1}`} loading="lazy" />)}
+    </section>
+  )
+}

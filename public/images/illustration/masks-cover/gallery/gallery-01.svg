@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1500" role="img" aria-labelledby="title">
+  <title id="title">Masks Cover gallery placeholder</title>
+  <rect width="2000" height="1500" fill="#f1f5f2"/>
+  <path d="M470 540c250-320 680-320 930 0-250 430-680 430-930 0z" fill="#171717"/>
+  <circle cx="820" cy="600" r="70" fill="#d43f24"/>
+  <circle cx="1090" cy="600" r="70" fill="#16756f"/>
+</svg>

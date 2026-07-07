@@ -1,0 +1,49 @@
+<div class="page-transition-screen" aria-hidden="true"></div>
+
+<script>
+  const transitionDuration = 360;
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function isNormalInternalLink(link) {
+    if (!(link instanceof HTMLAnchorElement)) return false;
+    if (!link.href || link.target || link.hasAttribute("download")) return false;
+    if (link.dataset.noTransition === "true") return false;
+
+    const destination = new URL(link.href);
+    const current = new URL(window.location.href);
+    const samePageHash =
+      destination.origin === current.origin &&
+      destination.pathname === current.pathname &&
+      destination.search === current.search &&
+      destination.hash;
+
+    return destination.origin === current.origin && !samePageHash;
+  }
+
+  function leavePage(url) {
+    if (prefersReducedMotion.matches) {
+      window.location.href = url;
+      return;
+    }
+
+    document.documentElement.classList.add("is-page-leaving");
+    window.setTimeout(() => {
+      window.location.href = url;
+    }, transitionDuration);
+  }
+
+  window.addEventListener("pageshow", () => {
+    document.documentElement.classList.remove("is-page-leaving");
+  });
+
+  document.addEventListener("click", (event) => {
+    if (event.defaultPrevented || event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    const link = event.target instanceof Element ? event.target.closest("a") : null;
+    if (!isNormalInternalLink(link)) return;
+
+    event.preventDefault();
+    leavePage(link.href);
+  });
+</script>

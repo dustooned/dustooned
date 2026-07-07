@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" role="img" aria-labelledby="title">
+  <title id="title">Dustooned</title>
+  <rect width="640" height="180" rx="16" fill="#171717"/>
+  <circle cx="94" cy="90" r="48" fill="#d43f24"/>
+  <path d="M72 92c16-28 40-28 56 0-16 28-40 28-56 0z" fill="#fbfaf7"/>
+  <text x="170" y="108" fill="#fbfaf7" font-family="Arial, sans-serif" font-size="54" font-weight="800">DUSTOONED</text>
+</svg>

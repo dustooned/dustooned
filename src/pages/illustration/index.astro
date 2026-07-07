@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageIntro from "../../components/PageIntro.astro";
+import ProjectGrid from "../../components/ProjectGrid.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { contentSlug } from "../../config/content";
+
+const projects = (await getCollection("projects", ({ data }) => data.section === "illustration")).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
+);
+---
+
+<BaseLayout title="Illustration" description="Images, covers, drawings, design, and visual development.">
+  <div class="site-shell">
+    <PageIntro title="Illustration" description="Images, covers, drawings, design, and visual development." />
+    <ProjectGrid>
+      {
+        projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            href={`/illustration/${contentSlug(project.id)}`}
+            thumbnail={project.data.thumbnail}
+            description={project.data.description}
+            year={project.data.year}
+            role={project.data.role}
+          />
+        ))
+      }
+    </ProjectGrid>
+  </div>
+</BaseLayout>

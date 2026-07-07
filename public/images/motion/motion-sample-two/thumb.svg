@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-labelledby="title">
+  <title id="title">Motion sample placeholder thumbnail</title>
+  <rect width="1600" height="1200" fill="#f1f5f2"/>
+  <rect x="170" y="170" width="1260" height="860" rx="60" fill="#171717"/>
+  <circle cx="500" cy="600" r="180" fill="#d43f24"/>
+  <circle cx="1080" cy="600" r="180" fill="#16756f"/>
+  <text x="230" y="945" fill="#fbfaf7" font-family="Arial, sans-serif" font-size="86" font-weight="800">MOTION SAMPLE</text>
+</svg>

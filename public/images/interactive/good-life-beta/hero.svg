@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1350" role="img" aria-labelledby="title">
+  <title id="title">Good Life Beta placeholder hero</title>
+  <rect width="2400" height="1350" fill="#f1f5f2"/>
+  <rect x="260" y="220" width="1880" height="910" rx="44" fill="#171717"/>
+  <path d="M520 940h1320l-260-520-340 330-280-450z" fill="#16756f"/>
+  <circle cx="1650" cy="430" r="170" fill="#d43f24"/>
+</svg>

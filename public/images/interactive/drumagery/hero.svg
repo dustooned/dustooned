@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1350" role="img" aria-labelledby="title">
+  <title id="title">Drumagery placeholder hero</title>
+  <rect width="2400" height="1350" fill="#171717"/>
+  <circle cx="620" cy="620" r="290" fill="#fbfaf7"/>
+  <circle cx="620" cy="620" r="135" fill="#d43f24"/>
+  <rect x="1200" y="350" width="650" height="650" rx="52" fill="#16756f"/>
+</svg>

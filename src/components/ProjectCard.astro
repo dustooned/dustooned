@@ -1,0 +1,61 @@
+---
+type Props = {
+  title: string;
+  href?: string;
+  thumbnail: string;
+  description?: string;
+  year?: string;
+  role?: string;
+  tags?: string[];
+  isMotion?: boolean;
+  videoUrl?: string;
+};
+
+const {
+  title,
+  href,
+  thumbnail,
+  description,
+  year,
+  role,
+  tags = [],
+  isMotion = false,
+  videoUrl
+} = Astro.props;
+---
+
+{
+  isMotion ? (
+    <button
+      class="card project-card"
+      type="button"
+      data-motion-trigger
+      data-title={title}
+      data-description={description}
+      data-year={year}
+      data-role={role}
+      data-tags={tags.join(", ")}
+      data-video-url={videoUrl}
+    >
+      <span class="card__media">
+        <img src={thumbnail} alt={`${title} thumbnail`} loading="lazy" />
+      </span>
+      <span class="card__body">
+        <span class="card__meta">{[year, role].filter(Boolean).join(" / ")}</span>
+        <span class="card__title">{title}</span>
+        {description && <span class="card__description">{description}</span>}
+      </span>
+    </button>
+  ) : (
+    <a class="card project-card" href={href}>
+      <span class="card__media">
+        <img src={thumbnail} alt={`${title} thumbnail`} loading="lazy" />
+      </span>
+      <span class="card__body">
+        <span class="card__meta">{[year, role].filter(Boolean).join(" / ")}</span>
+        <span class="card__title">{title}</span>
+        {description && <span class="card__description">{description}</span>}
+      </span>
+    </a>
+  )
+}

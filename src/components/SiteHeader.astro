@@ -1,0 +1,94 @@
+---
+import { navItems } from "../config/site";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) => {
+  if (href === "/") return path === "/";
+  return path === href || path.startsWith(`${href}/`);
+};
+---
+
+<header class="site-header">
+  <div class="site-shell">
+    <nav class="site-nav" aria-label="Main navigation">
+      <a class="site-logo" href="/" aria-label="Dustooned home">
+        <img src="/logos/logo.svg" alt="Dustooned" />
+      </a>
+      <div class="nav-links">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              target={item.external ? "_blank" : undefined}
+              rel={item.external ? "noopener noreferrer" : undefined}
+              aria-current={!item.external && isActive(item.href) ? "page" : undefined}
+            >
+              {item.label}
+              {item.external && <span class="external-indicator" aria-hidden="true">&nearr;</span>}
+              {item.external && <span class="visually-hidden"> opens in a new tab</span>}
+            </a>
+          ))
+        }
+      </div>
+    </nav>
+
+    <div class="mobile-nav">
+      <a class="mobile-logo" href="/" aria-label="Dustooned home">
+        <img src="/logos/logo-wordmark.svg" alt="Dustooned" />
+      </a>
+      <button class="mobile-menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-button>
+        <span aria-hidden="true">Menu</span>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" hidden data-mobile-menu>
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            target={item.external ? "_blank" : undefined}
+            rel={item.external ? "noopener noreferrer" : undefined}
+            aria-current={!item.external && isActive(item.href) ? "page" : undefined}
+          >
+            {item.label}
+            {item.external && <span class="external-indicator" aria-hidden="true">&nearr;</span>}
+            {item.external && <span class="visually-hidden"> opens in a new tab</span>}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector("[data-menu-button]");
+  const menu = document.querySelector("[data-mobile-menu]");
+
+  function closeMenu() {
+    if (!(button instanceof HTMLButtonElement) || !(menu instanceof HTMLElement)) return;
+    button.setAttribute("aria-expanded", "false");
+    menu.hidden = true;
+    document.body.classList.remove("menu-open");
+  }
+
+  function openMenu() {
+    if (!(button instanceof HTMLButtonElement) || !(menu instanceof HTMLElement)) return;
+    button.setAttribute("aria-expanded", "true");
+    menu.hidden = false;
+    document.body.classList.add("menu-open");
+  }
+
+  button?.addEventListener("click", () => {
+    const expanded = button.getAttribute("aria-expanded") === "true";
+    if (expanded) closeMenu();
+    else openMenu();
+  });
+
+  menu?.addEventListener("click", (event) => {
+    if (event.target instanceof HTMLAnchorElement) closeMenu();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+</script>

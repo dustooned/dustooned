@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "./BaseLayout.astro";
+import ExternalLinkButton from "../components/ExternalLinkButton.astro";
+import MediaGallery from "../components/MediaGallery.astro";
+import TagList from "../components/TagList.astro";
+
+type Props = {
+  entry: CollectionEntry<"projects">;
+};
+
+const { entry } = Astro.props;
+const data = entry.data;
+const heroAspect = data.heroAspect ?? "16:9";
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <article class="wide-shell project-detail">
+    <header class="page-intro">
+      <p>{data.section}</p>
+      <h1>{data.title}</h1>
+      <p>{data.description}</p>
+      <div class="cluster">
+        {data.year && <span>{data.year}</span>}
+        {data.role && <span>{data.role}</span>}
+      </div>
+      <TagList tags={data.tags} />
+    </header>
+
+    {
+      data.hero && (
+        <img
+          class="project-hero__image"
+          src={data.hero}
+          alt={`${data.title} project hero`}
+          data-aspect={heroAspect === "auto" ? undefined : heroAspect}
+        />
+      )
+    }
+
+    {
+      data.embedUrl && (
+        <iframe
+          class="project-embed"
+          src={data.embedUrl}
+          title={`${data.title} embed`}
+          loading="lazy"
+          allowfullscreen
+        />
+      )
+    }
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <div class="cluster">
+      {data.projectUrl && <ExternalLinkButton href={data.projectUrl} label="Open project" />}
+      {data.videoUrl && <ExternalLinkButton href={data.videoUrl} label="Watch on YouTube" />}
+    </div>
+
+    <MediaGallery images={data.gallery} title={data.title} />
+  </article>
+</BaseLayout>

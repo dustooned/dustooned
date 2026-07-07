@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-labelledby="title">
+  <title id="title">Illustration sample placeholder thumbnail</title>
+  <rect width="1600" height="1200" fill="#16756f"/>
+  <rect x="220" y="180" width="1160" height="840" rx="48" fill="#fbfaf7"/>
+  <path d="M390 830 650 360l240 310 180-210 190 370z" fill="#171717"/>
+  <circle cx="1130" cy="350" r="115" fill="#d43f24"/>
+</svg>

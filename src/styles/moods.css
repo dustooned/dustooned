@@ -1,0 +1,169 @@
+/* Visual mood switcher.
+   Active mood is set in src/config/site.ts as VISUAL_MOOD.
+   Options: clean, poster, sketchbook, comic.
+   The active poster mood uses Walter Turncoat from Google Fonts for display type. */
+
+@import url("https://fonts.googleapis.com/css2?family=Walter+Turncoat&display=swap");
+
+:root {
+  --font-display: var(--font-heading);
+  --display-weight: 850;
+  --display-letter-spacing: 0;
+  --display-text-shadow: none;
+  --display-transform: none;
+  --hand-border-width: 1px;
+  --hand-border-color: var(--color-border);
+  --hand-shadow: var(--shadow-card);
+  --hand-accent-stroke: 0.45rem;
+  --hand-frame-tilt: 0deg;
+}
+
+html[data-visual-mood="clean"] {
+  --font-display: var(--font-heading);
+  --display-weight: 800;
+  --display-letter-spacing: 0;
+  --display-text-shadow: none;
+  --display-transform: none;
+}
+
+html[data-visual-mood="poster"] {
+  --color-bg: #fffaf1;
+  --color-surface: #fffdf8;
+  --color-surface-alt: #f3eadc;
+  --color-text: #18130f;
+  --color-muted: #62564d;
+  --color-border: rgba(24, 19, 15, 0.22);
+  --color-border-strong: rgba(24, 19, 15, 0.46);
+  --font-display: "Walter Turncoat", "Trebuchet MS", var(--font-body);
+  --display-weight: 400;
+  --display-letter-spacing: 0.01em;
+  --display-text-shadow: none;
+  --display-transform: rotate(-0.5deg);
+  --hand-border-width: 2px;
+  --hand-border-color: var(--color-border-strong);
+  --hand-shadow: 5px 5px 0 rgba(24, 19, 15, 0.12);
+  --hand-accent-stroke: 0.58rem;
+  --hand-frame-tilt: -0.3deg;
+}
+
+html[data-visual-mood="sketchbook"] {
+  --color-bg: #fffdf5;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f4f0e5;
+  --color-text: #1d1814;
+  --color-muted: #6b6155;
+  --color-border: rgba(29, 24, 20, 0.2);
+  --color-border-strong: rgba(29, 24, 20, 0.38);
+  --font-display: "Comic Sans MS", "Trebuchet MS", var(--font-body);
+  --display-weight: 800;
+  --display-letter-spacing: 0.005em;
+  --display-text-shadow: none;
+  --display-transform: rotate(-0.8deg);
+  --hand-border-width: 2px;
+  --hand-border-color: var(--color-border-strong);
+  --hand-shadow: 3px 4px 0 rgba(29, 24, 20, 0.09);
+  --hand-accent-stroke: 0.45rem;
+  --hand-frame-tilt: 0.45deg;
+}
+
+html[data-visual-mood="comic"] {
+  --color-bg: #fff8e8;
+  --color-surface: #ffffff;
+  --color-surface-alt: #ffe9d3;
+  --color-text: #15120f;
+  --color-muted: #5f554c;
+  --color-border: rgba(21, 18, 15, 0.24);
+  --color-border-strong: rgba(21, 18, 15, 0.55);
+  --font-display: Impact, "Arial Black", "Trebuchet MS", var(--font-body);
+  --display-weight: 900;
+  --display-letter-spacing: 0.025em;
+  --display-text-shadow: 0.04em 0.04em 0 var(--color-accent-soft);
+  --display-transform: skew(-2deg) rotate(-0.25deg);
+  --hand-border-width: 3px;
+  --hand-border-color: var(--color-text);
+  --hand-shadow: 6px 6px 0 var(--color-accent-soft);
+  --hand-accent-stroke: 0.5rem;
+  --hand-frame-tilt: -0.2deg;
+}
+
+body {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(212, 63, 36, 0.04), transparent 24rem),
+    linear-gradient(90deg, rgba(24, 19, 15, 0.025) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(24, 19, 15, 0.018) 1px, transparent 1px),
+    var(--color-bg);
+  background-size: auto, 42px 42px, 42px 42px, auto;
+}
+
+h1,
+h2 {
+  text-wrap: balance;
+}
+
+.page-intro h1,
+.split-heading h2,
+.newsletter-band__copy h2,
+.site-footer h2 {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  text-shadow: var(--display-text-shadow);
+  transform: var(--display-transform);
+}
+
+.page-intro h1::after,
+.split-heading h2::after,
+.newsletter-band__copy h2::after {
+  content: "";
+  position: absolute;
+  left: 0.02em;
+  right: -0.08em;
+  bottom: 0.02em;
+  z-index: -1;
+  height: var(--hand-accent-stroke);
+  background: var(--color-accent-soft);
+  transform: rotate(-1.2deg);
+}
+
+.card,
+.newsletter-band__media,
+.project-hero__image,
+.raw-post-insert,
+.motion-lightbox__panel {
+  border-width: var(--hand-border-width);
+  border-color: var(--hand-border-color);
+  box-shadow: var(--hand-shadow);
+}
+
+.card,
+.newsletter-band__media {
+  transform: rotate(var(--hand-frame-tilt));
+}
+
+.card:hover {
+  transform: rotate(var(--hand-frame-tilt)) translateY(-2px);
+}
+
+.card__title {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-letter-spacing);
+  text-shadow: var(--display-text-shadow);
+}
+
+.button-link,
+.mobile-menu-button {
+  border-width: var(--hand-border-width);
+  border-color: var(--hand-border-color);
+  box-shadow: 2px 2px 0 rgba(24, 19, 15, 0.12);
+}
+
+html[data-visual-mood="clean"] body {
+  background: var(--color-bg);
+}
+
+html[data-visual-mood="clean"] .page-intro h1::after,
+html[data-visual-mood="clean"] .split-heading h2::after,
+html[data-visual-mood="clean"] .newsletter-band__copy h2::after {
+  display: none;
+}

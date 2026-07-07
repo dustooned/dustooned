@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-labelledby="title">
+  <title id="title">Newsletter placeholder image</title>
+  <rect width="1600" height="1200" fill="#f1f5f2"/>
+  <rect x="220" y="240" width="1160" height="720" rx="42" fill="#171717"/>
+  <path d="M300 330 800 680l500-350" fill="none" stroke="#fbfaf7" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M320 890 650 590m630 300L950 590" fill="none" stroke="#16756f" stroke-width="44" stroke-linecap="round"/>
+  <circle cx="1180" cy="300" r="130" fill="#d43f24"/>
+  <text x="290" y="1060" fill="#171717" font-family="Arial, sans-serif" font-size="88" font-weight="900">NEWSLETTER</text>
+</svg>

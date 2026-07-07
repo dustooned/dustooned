@@ -1,0 +1,28 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageIntro from "../../components/PageIntro.astro";
+import JournalCard from "../../components/JournalCard.astro";
+import { contentSlug } from "../../config/content";
+
+const posts = (await getCollection("journal")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Journal" description="Process notes, updates, and custom MDX posts.">
+  <div class="site-shell">
+    <PageIntro title="Journal" description="Process notes, updates, and custom MDX posts." />
+    <div class="journal-grid">
+      {
+        posts.map((post) => (
+          <JournalCard
+            title={post.data.title}
+            href={`/journal/${contentSlug(post.id)}`}
+            thumbnail={post.data.thumbnail}
+            date={post.data.date}
+            excerpt={post.data.excerpt}
+          />
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

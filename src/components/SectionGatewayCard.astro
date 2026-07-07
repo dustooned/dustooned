@@ -1,0 +1,21 @@
+---
+type Props = {
+  title: string;
+  href: string;
+  description: string;
+  external?: boolean;
+};
+
+const { title, href, description, external = false } = Astro.props;
+---
+
+<a class="card gateway-card" href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
+  <span class="card__body">
+    <span class="card__kicker">{external ? "External" : "Section"}</span>
+    <span class="card__title">
+      {title}
+      {external && <span class="external-indicator" aria-hidden="true">&nearr;</span>}
+    </span>
+    <span class="card__description">{description}</span>
+  </span>
+</a>

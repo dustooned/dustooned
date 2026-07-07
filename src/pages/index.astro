@@ -1,0 +1,76 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import JournalCard from "../components/JournalCard.astro";
+import SectionGatewayCard from "../components/SectionGatewayCard.astro";
+import { contentSlug } from "../config/content";
+import { EXTERNAL_LINKS } from "../config/site";
+
+const projects = (await getCollection("projects")).sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const featuredProjects = projects.filter((project) => project.data.featured).slice(0, 6);
+const journal = (await getCollection("journal")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+---
+
+<BaseLayout>
+  <div class="site-shell section-stack">
+    <section class="page-intro">
+      <p>Artist / educator portfolio</p>
+      <h1>Dustooned</h1>
+      <p>Motion, illustration, interactive experiments, journal notes, and teaching work by Dustin / T'.</p>
+    </section>
+
+    <section>
+      <div class="split-heading">
+        <h2>Featured Work</h2>
+      </div>
+      <div class="project-grid">
+        {
+          featuredProjects.map((project) => (
+            <ProjectCard
+              title={project.data.title}
+              href={`/${project.data.section}/${contentSlug(project.id)}`}
+              thumbnail={project.data.thumbnail}
+              description={project.data.description}
+              year={project.data.year}
+              role={project.data.role}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <div class="split-heading">
+        <h2>Explore</h2>
+      </div>
+      <div class="gateway-grid">
+        <SectionGatewayCard title="Motion" href="/motion" description="Animation, film, loops, and motion experiments." />
+        <SectionGatewayCard title="Illustration" href="/illustration" description="Images, covers, drawings, design, and visual development." />
+        <SectionGatewayCard title="Sequential" href={EXTERNAL_LINKS.sequential} description="Comics and visual narratives at StayToonedGFX." external />
+        <SectionGatewayCard title="Interactive" href="/interactive" description="Games, prototypes, digital toys, and web experiments." />
+        <SectionGatewayCard title="Education" href={EXTERNAL_LINKS.education} description="Student work, class showcases, and final projects." external />
+      </div>
+    </section>
+
+    <section>
+      <div class="split-heading">
+        <h2>Recent Journal</h2>
+        <a href="/journal">View all</a>
+      </div>
+      <div class="journal-grid">
+        {
+          journal.map((post) => (
+            <JournalCard
+              title={post.data.title}
+              href={`/journal/${contentSlug(post.id)}`}
+              thumbnail={post.data.thumbnail}
+              date={post.data.date}
+              excerpt={post.data.excerpt}
+            />
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

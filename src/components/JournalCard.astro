@@ -1,0 +1,32 @@
+---
+type Props = {
+  title: string;
+  href: string;
+  thumbnail?: string;
+  date: Date;
+  excerpt: string;
+  tags?: string[];
+};
+
+const { title, href, thumbnail, date, excerpt } = Astro.props;
+const formattedDate = date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric"
+});
+---
+
+<a class="card journal-card" href={href}>
+  {
+    thumbnail && (
+      <span class="card__media">
+        <img src={thumbnail} alt={`${title} thumbnail`} loading="lazy" />
+      </span>
+    )
+  }
+  <span class="card__body">
+    <span class="card__meta">{formattedDate}</span>
+    <span class="card__title">{title}</span>
+    <span class="card__description">{excerpt}</span>
+  </span>
+</a>
