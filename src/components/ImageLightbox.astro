@@ -1,0 +1,63 @@
+<div class="image-lightbox" hidden data-image-lightbox role="dialog" aria-modal="true" aria-labelledby="image-lightbox-title">
+  <div class="image-lightbox__backdrop" data-image-close></div>
+  <section class="image-lightbox__panel">
+    <button class="image-lightbox__close" type="button" data-image-close aria-label="Close image">Close</button>
+    <div class="image-lightbox__media">
+      <img data-image-img src="" alt="" />
+    </div>
+    <div class="image-lightbox__body">
+      <h2 id="image-lightbox-title" data-image-title></h2>
+      <p data-image-description></p>
+      <p data-image-meta></p>
+      <p data-image-tags></p>
+    </div>
+  </section>
+</div>
+
+<script>
+  const lightbox = document.querySelector("[data-image-lightbox]");
+  const img = document.querySelector("[data-image-img]");
+  const title = document.querySelector("[data-image-title]");
+  const description = document.querySelector("[data-image-description]");
+  const meta = document.querySelector("[data-image-meta]");
+  const tags = document.querySelector("[data-image-tags]");
+  const closeButtons = document.querySelectorAll("[data-image-close]");
+  let lastTrigger = null;
+
+  function setText(element, value) {
+    if (element instanceof HTMLElement) element.textContent = value || "";
+  }
+
+  function closeLightbox() {
+    if (!(lightbox instanceof HTMLElement) || !(img instanceof HTMLImageElement)) return;
+    lightbox.hidden = true;
+    img.removeAttribute("src");
+    document.body.classList.remove("menu-open");
+    if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
+  }
+
+  document.querySelectorAll("[data-image-trigger]").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      if (!(lightbox instanceof HTMLElement) || !(img instanceof HTMLImageElement)) return;
+      lastTrigger = trigger;
+      const triggerElement = trigger instanceof HTMLElement ? trigger : null;
+      const dataset = triggerElement?.dataset;
+      setText(title, dataset?.title);
+      setText(description, dataset?.description);
+      setText(meta, [dataset?.year, dataset?.role].filter(Boolean).join(" / "));
+      setText(tags, dataset?.tags);
+      img.src = dataset?.image || "";
+      img.alt = dataset?.title || "";
+      lightbox.hidden = false;
+      document.body.classList.add("menu-open");
+      const closeButton = lightbox.querySelector("[data-image-close]");
+      if (closeButton instanceof HTMLElement) closeButton.focus();
+    });
+  });
+
+  closeButtons.forEach((button) => button.addEventListener("click", closeLightbox));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLightbox();
+  });
+</script>

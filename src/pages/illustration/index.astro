@@ -4,7 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageIntro from "../../components/PageIntro.astro";
 import ProjectGrid from "../../components/ProjectGrid.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
-import { contentSlug } from "../../config/content";
+import ImageLightbox from "../../components/ImageLightbox.astro";
 
 const projects = (await getCollection("projects", ({ data }) => data.section === "illustration")).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
@@ -19,14 +19,17 @@ const projects = (await getCollection("projects", ({ data }) => data.section ===
         projects.map((project) => (
           <ProjectCard
             title={project.data.title}
-            href={`/illustration/${contentSlug(project.id)}`}
             thumbnail={project.data.thumbnail}
             description={project.data.description}
             year={project.data.year}
             role={project.data.role}
+            tags={project.data.tags}
+            isImageLightbox
+            image={project.data.hero || project.data.thumbnail}
           />
         ))
       }
     </ProjectGrid>
   </div>
+  <ImageLightbox />
 </BaseLayout>

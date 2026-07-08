@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-labelledby="title">
-  <title id="title">Masks Cover placeholder thumbnail</title>
-  <rect width="1600" height="1200" fill="#fbfaf7"/>
-  <rect x="250" y="120" width="1100" height="960" rx="28" fill="#171717"/>
-  <path d="M520 390c120-180 320-180 440 0-120 230-320 230-440 0z" fill="#d43f24"/>
-  <path d="M720 560c120-120 280-120 400 0-120 190-280 190-400 0z" fill="#16756f"/>
-  <text x="360" y="990" fill="#fbfaf7" font-family="Arial, sans-serif" font-size="92" font-weight="800">MASKS COVER</text>
-</svg>

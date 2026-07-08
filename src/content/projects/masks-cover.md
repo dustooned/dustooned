@@ -1,8 +1,8 @@
 ---
 title: "Masks Cover"
 section: "illustration"
-thumbnail: "/images/illustration/masks-cover/thumb.svg"
-hero: "/images/illustration/masks-cover/hero.svg"
+thumbnail: "/images/illustration/masks-cover/hero.webp"
+hero: "/images/illustration/masks-cover/hero.webp"
 description: "Book cover design for a self-published graphic novel."
 year: "2024"
 role: "Illustration, design"

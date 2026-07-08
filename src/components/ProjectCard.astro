@@ -12,6 +12,8 @@ type Props = {
   isMotion?: boolean;
   videoUrl?: string;
   episodes?: { label: string; videoUrl: string }[];
+  isImageLightbox?: boolean;
+  image?: string;
 };
 
 const {
@@ -24,7 +26,9 @@ const {
   tags = [],
   isMotion = false,
   videoUrl,
-  episodes = []
+  episodes = [],
+  isImageLightbox = false,
+  image
 } = Astro.props;
 ---
 
@@ -41,6 +45,27 @@ const {
       data-tags={tags.join(", ")}
       data-video-url={videoUrl}
       data-episodes={episodes.length > 1 ? JSON.stringify(episodes) : undefined}
+    >
+      <span class="card__media">
+        <img src={withBase(thumbnail)} alt={`${title} thumbnail`} loading="lazy" />
+      </span>
+      <span class="card__body">
+        <span class="card__meta">{[year, role].filter(Boolean).join(" / ")}</span>
+        <span class="card__title">{title}</span>
+        {description && <span class="card__description">{description}</span>}
+      </span>
+    </button>
+  ) : isImageLightbox ? (
+    <button
+      class="card project-card"
+      type="button"
+      data-image-trigger
+      data-title={title}
+      data-description={description}
+      data-year={year}
+      data-role={role}
+      data-tags={tags.join(", ")}
+      data-image={withBase(image || thumbnail)}
     >
       <span class="card__media">
         <img src={withBase(thumbnail)} alt={`${title} thumbnail`} loading="lazy" />

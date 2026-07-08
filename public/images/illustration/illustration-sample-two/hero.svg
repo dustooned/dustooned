@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1350" role="img" aria-labelledby="title">
-  <title id="title">Illustration sample placeholder hero</title>
-  <rect width="2400" height="1350" fill="#16756f"/>
-  <rect x="260" y="150" width="1880" height="1050" rx="50" fill="#fbfaf7"/>
-  <path d="M520 980 940 330l360 480 260-310 320 480z" fill="#171717"/>
-  <circle cx="1740" cy="360" r="150" fill="#d43f24"/>
-</svg>
