@@ -16,20 +16,15 @@ Important files:
 - `src/layouts/BaseLayout.astro`: global shell
 - `src/components/SiteHeader.astro`: desktop/mobile navigation
 - `src/components/PageTransition.astro`: palette fade transitions
-- `src/components/BubbleInteraction.astro`: passive mouse interaction for background bubbles
-- `src/styles/moods.css`: handmade visual direction
+- `src/components/Hero.astro`: homepage hero (video/gif slot + placeholder fallback)
+- `src/components/BubbleInteraction.astro`: renders randomized background bubbles with independent per-bubble parallax
+- `src/components/MotionLightbox.astro`: video modal, supports single video or multi-episode toggle
+- `src/styles/moods.css`: handmade visual direction, bubble field styles
 - `.github/workflows/deploy.yml`: GitHub Pages deploy workflow
 
 ## Next Instruction
 
-Start by verifying the live GitHub Pages deployment.
-
-1. In GitHub, open the repository Actions tab and confirm the latest `Deploy to GitHub Pages` workflow completed successfully.
-2. Open `https://dustooned.github.io/dustooned/`.
-3. Confirm CSS, images, handmade grid, rising bubbles, navigation, and palette page transitions are working on the live site.
-4. If the live site appears as plain/static text, check repository Settings -> Pages and set Source to `GitHub Actions`, not `Deploy from a branch`.
-
-After the live deploy is confirmed, replace one placeholder Illustration project with a real project. This should test:
+Live deploy is confirmed working, and Motion is fully populated with real content. Next up: replace a placeholder Illustration project with a real one. This should test:
 
 - real thumbnail
 - real hero image
@@ -41,6 +36,8 @@ After the live deploy is confirmed, replace one placeholder Illustration project
 - optional gallery images
 
 Then run `npm run build`, commit the content change, and push.
+
+Interactive still has placeholder content too — same treatment once real projects are ready.
 
 ## Current Active Design
 
@@ -65,19 +62,9 @@ Only `poster` has been actively tuned.
 
 ## Deployment
 
-GitHub Pages should use:
+GitHub Pages Source is confirmed set to `GitHub Actions` in repository settings (Settings -> Pages -> Build and deployment -> Source). This was a real footgun: GitHub was previously set to `Deploy from a branch`, which runs an automatic legacy Jekyll `pages-build-deployment` workflow in parallel with our custom `Deploy to GitHub Pages` workflow on every push. Both targeted the same Pages environment, so which one "won" was a race condition — it usually happened to be ours, but the Jekyll workflow eventually failed outright (it's not a Jekyll site). Switching Source to `GitHub Actions` stops the Jekyll workflow from running at all.
 
-```txt
-Source: GitHub Actions
-```
-
-Do not use:
-
-```txt
-Deploy from a branch
-```
-
-The branch-root mode will not correctly serve the Astro build.
+If this setting ever reverts (e.g. after a repo transfer or Pages reset), redo that switch before debugging anything else — a "plain/static text" live site or a failing `pages-build-deployment` run is the symptom.
 
 Temporary URL:
 
@@ -132,18 +119,28 @@ public/images/{section}/{slug}/
 
 Prefer one Markdown/MDX file per content item and predictable asset names.
 
+Motion projects support an optional `episodes` field (array of `{ label, videoUrl }`) for
+projects with more than one video. The lightbox only shows the episode toggle row when a
+project has 2+ episodes; single-video projects are unaffected. Motion thumbnails are pulled
+directly from YouTube (`https://img.youtube.com/vi/{id}/hqdefault.jpg`) rather than custom
+assets, since the video itself is the source image. Lightbox videos do not autoplay.
+
 ## Known Placeholder Areas
 
-These are intentionally unfinished:
+Done:
 
-- real project thumbnails and hero images
-- real project descriptions
-- Motion YouTube URLs
-- About page copy
+- Motion: 12 real projects with real YouTube videos, thumbnails, and descriptions
+- About page: real bio
+- Homepage: hero, organic bubble background, "What's New" journal feed
+
+Still unfinished:
+
+- Illustration: real thumbnails, hero images, descriptions
+- Interactive: real thumbnails, hero images, descriptions
 - Contact page copy
 - CV page text
 - Resume page text
-- newsletter provider/integration
+- newsletter provider/integration (currently a static callout)
 - final logo assets
 - final custom domain setup
 

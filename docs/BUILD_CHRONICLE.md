@@ -49,6 +49,17 @@ External navigation:
 - Sequential -> `https://www.staytoonedgfx.com/`
 - Education -> `https://github.com/dustooned/lbcc-student-work`
 
+## Homepage Hero
+
+The homepage no longer has a manually-curated "Featured Work" grid. Instead:
+
+- `src/components/Hero.astro` — full-bleed hero with a video/gif slot (`HERO.videoSrc` in
+  `src/config/site.ts`), white welcome text over a dark gradient scrim, and two CTAs (Journal
+  and an in-page anchor to Explore). Falls back to an animated gradient placeholder until a
+  real video/gif is dropped in.
+- "Explore" — the section gateway cards, doubling as the primary "how to look around" nav.
+- "What's New" — latest 3 journal posts, since journal is the actual latest-activity feed.
+
 ## Design Direction
 
 The visual system started neutral and then moved toward a handmade/crafted direction.
@@ -76,17 +87,21 @@ The mood styles live in `src/styles/moods.css`.
 
 ## Background Bubbles
 
-The bubble background is CSS-driven and lives on `body::before` in `src/styles/moods.css`.
+Originally a single CSS `body::before` layer with baked-in radial-gradient positions, animated
+as one unit. Reworked into independent DOM elements because a single shared layer made every
+bubble shift together on pointer move, which read as mechanical rather than organic.
 
-Behavior:
+`src/components/BubbleInteraction.astro` now server-renders ~18 `<span class="bubble">`
+elements at build time, each with randomized (via `Math.random()`) size, horizontal position,
+rise duration/delay, wobble duration/delay, and — the key part — its own `--parallax`
+multiplier (roughly -1.6 to 1.6, mixed sign). A single pointer-tracked `--bubble-mouse-x`
+CSS var is set on `documentElement`; each bubble multiplies that shared value by its own
+parallax factor, so pointer movement scatters bubbles independently instead of shifting them
+as one block. Rise motion animates `bottom`, wobble animates `margin-left`, and parallax
+animates `transform` — three separate properties so none of the animations fight each other.
 
-- bubbles rise upward infinitely on the Y axis
-- movement is passive and decorative
-- a tiny script offsets the bubble layer on the X axis in response to pointer movement
-- the offset eases back toward normal flow
-- reduced-motion users do not get animation/interactivity
-
-The pointer script is `src/components/BubbleInteraction.astro`, loaded from `src/layouts/BaseLayout.astro`.
+Styles live in `src/styles/moods.css` (`.bubble-field`, `.bubble`, `.bubble--a`/`.bubble--b`).
+Reduced-motion users get no animation and no parallax transform.
 
 ## Page Transitions
 
@@ -105,6 +120,23 @@ Current behavior:
 - external links, downloads, new-tab links, and same-page hash links are ignored
 - reduced-motion users navigate immediately
 
+## Motion Content
+
+All 12 Motion sample/placeholder projects have been replaced with real projects (real titles,
+descriptions, and YouTube videos). Two schema/behavior additions came out of this:
+
+- **Episodes**: `episodes?: { label: string; videoUrl: string }[]` on the projects schema.
+  When a project has 2+ episodes, `MotionLightbox.astro` renders a row of pill toggle buttons
+  that swap the embedded video without closing the modal. Projects with 0-1 episodes show no
+  toggle row. Used for multi-part videos (e.g. "The ReUp", "Diaspora Rising").
+- **Thumbnails from YouTube**: motion project `thumbnail` fields point directly at
+  `https://img.youtube.com/vi/{id}/hqdefault.jpg` rather than custom-drawn assets — the video
+  itself is the source image, so there's no separate thumbnail to keep in sync.
+- Lightbox videos do **not** autoplay (`youtubeEmbedUrl()` no longer appends `?autoplay=1`).
+- Lightbox body text (title, meta, description, tags, episode toggle row) is centered with a
+  56ch max-width on paragraphs, since several real descriptions run longer than the original
+  one-line placeholders.
+
 ## Newsletter
 
 `src/components/NewsletterSignup.astro` renders a global newsletter placeholder above the footer on every page.
@@ -117,6 +149,12 @@ It currently includes:
 - placeholder button linking to Contact
 
 This is intentionally not wired to a provider yet.
+
+The media icon originally scaled with its grid column (`minmax(240px, 0.42fr)`), which made it
+balloon to 500px+ on wide viewports. It's now capped at a fixed 160px square
+(`.newsletter-band__media` in `src/styles/layout.css`), with `justify-items: start` on the
+copy column so the button doesn't stretch to fill the now-wider column (CSS grid stretches
+children by default).
 
 ## GitHub Pages
 
@@ -151,20 +189,24 @@ When the final custom domain is ready, update the deployment setup so the site b
 https://www.dustooned.com
 ```
 
+### Jekyll workflow conflict (resolved)
+
+Repository Settings -> Pages -> Source was set to `Deploy from a branch`, which made GitHub
+run its own automatic Jekyll `pages-build-deployment` workflow on every push, in parallel with
+our custom `Deploy to GitHub Pages` Actions workflow. Both targeted the same `github-pages`
+Pages environment, so which deploy actually went live was a race condition. It usually worked
+out (ours tended to finish and "win"), but the Jekyll workflow eventually failed outright on a
+manual re-run, since this isn't a Jekyll site. Fixed by switching Source to `GitHub Actions` in
+repo settings, which stops the Jekyll workflow from running at all. See `docs/HANDOFF.md`
+Deployment section for the recovery steps if this setting ever reverts.
+
 ## Commit Timeline
 
-Recent meaningful commits:
-
-```txt
-3957592 Initial Astro portfolio scaffold
-df8e7d5 Tune handmade background and shadows
-e4041a3 Make background bubbles rise upward
-80cfcf6 Add turbulent ellipse page transition
-cba0099 Simplify page transition to palette fade
-8cad469 Add passive mouse interaction to background bubbles
-8c81fbc Add GitHub Pages deploy workflow
-23764e4 Fix GitHub Pages base paths
-```
+Commit history moves fast; `git log --oneline` is the source of truth. Meaningful milestones
+since the initial scaffold: homepage hero + organic per-bubble motion, real About bio, 12 real
+Motion projects with multi-episode lightbox support, YouTube-derived thumbnails, no-autoplay
+lightbox, centered lightbox text, newsletter band resize, and the GitHub Pages Source fix
+above.
 
 ## Current Validation
 
@@ -193,10 +235,9 @@ http://127.0.0.1:4321/
 
 Recommended next steps:
 
-- replace placeholder projects with one real Illustration project
-- test real images in cards and detail pages
-- replace placeholder Motion YouTube URLs
-- replace About, Contact, CV, and Resume placeholder copy
+- replace placeholder Illustration projects with real ones (thumbnail, hero, gallery, description)
+- replace placeholder Interactive projects with real ones
+- replace Contact, CV, and Resume placeholder copy
 - choose final newsletter provider or keep it as a static callout
 - review mobile behavior with real content
 - update final custom domain deployment once DNS is ready

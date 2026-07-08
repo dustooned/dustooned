@@ -21,7 +21,12 @@ In repository settings:
 Settings -> Pages -> Source -> GitHub Actions
 ```
 
-Do not use `Deploy from a branch` for this Astro site.
+Do not use `Deploy from a branch` for this Astro site. This is confirmed set correctly as of
+2026-07-08 — it was previously misconfigured as `Deploy from a branch`, which caused GitHub's
+automatic Jekyll `pages-build-deployment` workflow to run in parallel with the real deploy
+workflow on every push (race condition, eventually failed outright since this isn't a Jekyll
+site). If a live deploy ever looks stale or a `pages-build-deployment` run appears in Actions,
+re-check this setting first.
 
 ## Workflow
 
