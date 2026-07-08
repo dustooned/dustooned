@@ -52,15 +52,19 @@
 
 .motion-lightbox__body {
   padding: var(--space-5);
+  text-align: center;
 }
 
 .motion-lightbox__body p {
+  max-width: 56ch;
+  margin-inline: auto;
   color: var(--color-muted);
 }
 
 .motion-lightbox__episodes {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-2);
   margin-block: var(--space-3);
 }
