@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-labelledby="title">
-  <title id="title">The ReUp placeholder thumbnail</title>
-  <rect width="1600" height="1200" fill="#171717"/>
-  <circle cx="1180" cy="340" r="220" fill="#16756f"/>
-  <rect x="200" y="620" width="620" height="360" rx="36" fill="#d43f24"/>
-  <path d="M190 340c300-150 570 170 1220-70" fill="none" stroke="#fbfaf7" stroke-width="42"/>
-  <text x="120" y="1080" fill="#fbfaf7" font-family="Arial, sans-serif" font-size="88" font-weight="800">THE REUP</text>
-</svg>

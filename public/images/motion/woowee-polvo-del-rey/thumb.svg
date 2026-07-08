@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-labelledby="title">
-  <title id="title">WOOWEE! - Polvo Del Rey placeholder thumbnail</title>
-  <rect width="1600" height="1200" fill="#171717"/>
-  <circle cx="420" cy="820" r="240" fill="#d43f24"/>
-  <rect x="820" y="220" width="560" height="380" rx="36" fill="#16756f"/>
-  <path d="M150 620c320 120 620-120 1300 40" fill="none" stroke="#fbfaf7" stroke-width="42"/>
-  <text x="90" y="1080" fill="#fbfaf7" font-family="Arial, sans-serif" font-size="64" font-weight="800">WOOWEE! - POLVO DEL REY</text>
-</svg>

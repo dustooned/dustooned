@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-labelledby="title">
-  <title id="title">LCX 2017 placeholder thumbnail</title>
-  <rect width="1600" height="1200" fill="#171717"/>
-  <rect x="180" y="220" width="520" height="520" rx="36" fill="#d43f24"/>
-  <circle cx="1180" cy="480" r="240" fill="#16756f"/>
-  <path d="M190 900c400-120 820 120 1220 20" fill="none" stroke="#fbfaf7" stroke-width="42"/>
-  <text x="120" y="1080" fill="#fbfaf7" font-family="Arial, sans-serif" font-size="96" font-weight="800">LCX 2017</text>
-</svg>

@@ -1,7 +1,7 @@
 ---
 title: "WOOWEE! - Polvo Del Rey"
 section: "motion"
-thumbnail: "/images/motion/woowee-polvo-del-rey/thumb.svg"
+thumbnail: "https://img.youtube.com/vi/PAhrWWtDYdU/hqdefault.jpg"
 description: "Director/ Animator / Performance / Music Producer"
 videoUrl: "https://youtu.be/PAhrWWtDYdU"
 order: 2

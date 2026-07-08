@@ -1,7 +1,7 @@
 ---
 title: "The ReUp"
 section: "motion"
-thumbnail: "/images/motion/the-reup/thumb.svg"
+thumbnail: "https://img.youtube.com/vi/XuKfErGTw2Q/hqdefault.jpg"
 description: "One-line description shown on the card and in the lightbox."
 videoUrl: "https://youtu.be/XuKfErGTw2Q"
 episodes:
