@@ -11,6 +11,7 @@ type Props = {
   tags?: string[];
   isMotion?: boolean;
   videoUrl?: string;
+  episodes?: { label: string; videoUrl: string }[];
 };
 
 const {
@@ -22,7 +23,8 @@ const {
   role,
   tags = [],
   isMotion = false,
-  videoUrl
+  videoUrl,
+  episodes = []
 } = Astro.props;
 ---
 
@@ -38,6 +40,7 @@ const {
       data-role={role}
       data-tags={tags.join(", ")}
       data-video-url={videoUrl}
+      data-episodes={episodes.length > 1 ? JSON.stringify(episodes) : undefined}
     >
       <span class="card__media">
         <img src={withBase(thumbnail)} alt={`${title} thumbnail`} loading="lazy" />

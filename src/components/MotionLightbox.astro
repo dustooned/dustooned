@@ -7,6 +7,7 @@
     </div>
     <div class="motion-lightbox__body">
       <h2 id="motion-lightbox-title" data-motion-title></h2>
+      <div class="motion-lightbox__episodes" data-motion-episodes hidden></div>
       <p data-motion-description></p>
       <p data-motion-meta></p>
       <p data-motion-tags></p>
@@ -21,6 +22,7 @@
   const description = document.querySelector("[data-motion-description]");
   const meta = document.querySelector("[data-motion-meta]");
   const tags = document.querySelector("[data-motion-tags]");
+  const episodesContainer = document.querySelector("[data-motion-episodes]");
   const closeButtons = document.querySelectorAll("[data-motion-close]");
   let lastTrigger = null;
 
@@ -38,6 +40,41 @@
 
   function setText(element, value) {
     if (element instanceof HTMLElement) element.textContent = value || "";
+  }
+
+  function renderEpisodes(episodesJson, fallbackVideoUrl) {
+    if (!(episodesContainer instanceof HTMLElement) || !(iframe instanceof HTMLIFrameElement)) return;
+    episodesContainer.innerHTML = "";
+
+    let episodes = [];
+    try {
+      episodes = episodesJson ? JSON.parse(episodesJson) : [];
+    } catch {
+      episodes = [];
+    }
+
+    if (!Array.isArray(episodes) || episodes.length < 2) {
+      episodesContainer.hidden = true;
+      return;
+    }
+
+    episodesContainer.hidden = false;
+
+    episodes.forEach((episode, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "motion-lightbox__episode";
+      button.textContent = episode.label || `Episode ${index + 1}`;
+      if (episode.videoUrl === fallbackVideoUrl || (index === 0 && !fallbackVideoUrl)) {
+        button.setAttribute("aria-current", "true");
+      }
+      button.addEventListener("click", () => {
+        iframe.src = youtubeEmbedUrl(episode.videoUrl);
+        episodesContainer.querySelectorAll(".motion-lightbox__episode").forEach((btn) => btn.removeAttribute("aria-current"));
+        button.setAttribute("aria-current", "true");
+      });
+      episodesContainer.appendChild(button);
+    });
   }
 
   function closeLightbox() {
@@ -58,6 +95,7 @@
       setText(description, dataset?.description);
       setText(meta, [dataset?.year, dataset?.role].filter(Boolean).join(" / "));
       setText(tags, dataset?.tags);
+      renderEpisodes(dataset?.episodes, dataset?.videoUrl);
       iframe.src = youtubeEmbedUrl(dataset?.videoUrl || "");
       lightbox.hidden = false;
       document.body.classList.add("menu-open");

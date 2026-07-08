@@ -26,6 +26,7 @@ const projects = (await getCollection("projects", ({ data }) => data.section ===
             tags={project.data.tags}
             isMotion
             videoUrl={project.data.videoUrl}
+            episodes={project.data.episodes}
           />
         ))
       }
