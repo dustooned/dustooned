@@ -4,7 +4,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageIntro from "../components/PageIntro.astro";
 import ProjectGrid from "../components/ProjectGrid.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import MotionLightbox from "../components/MotionLightbox.astro";
 
 const projects = (await getCollection("projects", ({ data }) => data.section === "motion")).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
@@ -32,5 +31,4 @@ const projects = (await getCollection("projects", ({ data }) => data.section ===
       }
     </ProjectGrid>
   </div>
-  <MotionLightbox />
 </BaseLayout>

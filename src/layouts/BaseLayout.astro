@@ -4,6 +4,8 @@ import NewsletterSignup from "../components/NewsletterSignup.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import PageTransition from "../components/PageTransition.astro";
 import BubbleInteraction from "../components/BubbleInteraction.astro";
+import MotionLightbox from "../components/MotionLightbox.astro";
+import ImageLightbox from "../components/ImageLightbox.astro";
 import { SITE, VISUAL_MOOD } from "../config/site";
 import "../styles/global.css";
 
@@ -33,5 +35,7 @@ const pageTitle = title ? `${title} | ${SITE.title}` : SITE.title;
     </main>
     <NewsletterSignup />
     <SiteFooter />
+    <MotionLightbox />
+    <ImageLightbox />
   </body>
 </html>
