@@ -162,11 +162,13 @@
 }
 
 .motion-lightbox__zoom {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: #000000;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.95);
   display: grid;
   place-items: center;
+  padding: var(--space-5);
 }
 
 .motion-lightbox__zoom[hidden] {
@@ -174,15 +176,17 @@
 }
 
 .motion-lightbox__zoom img {
-  width: 100%;
-  height: 100%;
+  max-width: min(92vw, 1100px);
+  max-height: 88vh;
   object-fit: contain;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
 }
 
 .motion-lightbox__zoom-exit {
   position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
+  top: var(--space-4);
+  left: var(--space-4);
   z-index: 1;
   min-width: 44px;
   min-height: 44px;
@@ -217,11 +221,11 @@
 }
 
 .motion-lightbox__zoom-nav--prev {
-  left: var(--space-2);
+  left: var(--space-4);
 }
 
 .motion-lightbox__zoom-nav--next {
-  right: var(--space-2);
+  right: var(--space-4);
 }
 
 .image-lightbox {

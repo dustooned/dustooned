@@ -210,6 +210,11 @@
   if (zoomBack instanceof HTMLElement) zoomBack.addEventListener("click", closeZoom);
   if (zoomPrev instanceof HTMLElement) zoomPrev.addEventListener("click", () => stepZoom(-1));
   if (zoomNext instanceof HTMLElement) zoomNext.addEventListener("click", () => stepZoom(1));
+  if (zoom instanceof HTMLElement) {
+    zoom.addEventListener("click", (event) => {
+      if (event.target === zoom) closeZoom();
+    });
+  }
 
   document.querySelectorAll("[data-motion-trigger]").forEach((trigger) => {
     trigger.addEventListener("click", () => {
