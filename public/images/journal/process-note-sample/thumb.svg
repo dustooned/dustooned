@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-labelledby="title">
-  <title id="title">Process Note placeholder thumbnail</title>
-  <rect width="1600" height="1200" fill="#171717"/>
-  <rect x="220" y="220" width="1160" height="150" rx="24" fill="#fbfaf7"/>
-  <rect x="220" y="510" width="900" height="110" rx="20" fill="#16756f"/>
-  <rect x="220" y="750" width="1060" height="110" rx="20" fill="#d43f24"/>
-  <text x="220" y="1020" fill="#fbfaf7" font-family="Arial, sans-serif" font-size="88" font-weight="800">PROCESS NOTE</text>
-</svg>
