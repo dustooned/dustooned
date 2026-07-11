@@ -94,6 +94,60 @@
   border-color: var(--color-text);
 }
 
+.motion-lightbox__modes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-block: var(--space-3);
+}
+
+.motion-lightbox__modes[hidden] {
+  display: none;
+}
+
+.motion-lightbox__mode {
+  min-height: 44px;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 700;
+  font-size: var(--step--1);
+}
+
+.motion-lightbox__mode:hover {
+  background: var(--color-accent-soft);
+}
+
+.motion-lightbox__mode[aria-current="true"] {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.motion-lightbox__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-2);
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: var(--space-3);
+  background: var(--color-surface-alt);
+}
+
+.motion-lightbox__gallery[hidden] {
+  display: none;
+}
+
+.motion-lightbox__gallery img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  background: var(--color-border);
+}
+
 .image-lightbox {
   position: fixed;
   inset: 0;

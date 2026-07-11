@@ -27,7 +27,7 @@ const formattedDate = data.date.toLocaleDateString("en-US", {
       <TagList tags={data.tags} />
     </header>
 
-    {data.thumbnail && <img class="project-hero__image" src={withBase(data.thumbnail)} alt={`${data.title} thumbnail`} data-aspect="4:3" />}
+    {data.thumbnail && <img class="project-hero__image" src={withBase(data.thumbnail)} alt={data.title} />}
 
     <div class="prose">
       <slot />

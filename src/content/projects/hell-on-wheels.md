@@ -9,5 +9,8 @@ episodes:
     videoUrl: "https://youtu.be/uZqVcCTxILM"
   - label: "Episode 2"
     videoUrl: "https://youtu.be/AdL4mLVBxnE"
+gallery:
+  - "/images/motion/hell-on-wheels/storyboards/storyboard-001.webp"
+  - "/images/motion/hell-on-wheels/storyboards/storyboard-002.webp"
 order: 6
 ---

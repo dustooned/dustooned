@@ -2,11 +2,16 @@
   <div class="motion-lightbox__backdrop" data-motion-close></div>
   <section class="motion-lightbox__panel">
     <button class="motion-lightbox__close" type="button" data-motion-close aria-label="Close video">Close</button>
-    <div class="motion-lightbox__media">
+    <div class="motion-lightbox__media" data-motion-media>
       <iframe data-motion-iframe title="Motion project video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
+    <div class="motion-lightbox__gallery" data-motion-gallery hidden></div>
     <div class="motion-lightbox__body">
       <h2 id="motion-lightbox-title" data-motion-title></h2>
+      <div class="motion-lightbox__modes" data-motion-modes hidden>
+        <button type="button" class="motion-lightbox__mode" data-mode="video" aria-current="true">Video</button>
+        <button type="button" class="motion-lightbox__mode" data-mode="storyboards">Storyboards</button>
+      </div>
       <div class="motion-lightbox__episodes" data-motion-episodes hidden></div>
       <p data-motion-description></p>
       <p data-motion-meta></p>
@@ -17,14 +22,18 @@
 
 <script>
   const lightbox = document.querySelector("[data-motion-lightbox]");
+  const media = document.querySelector("[data-motion-media]");
   const iframe = document.querySelector("[data-motion-iframe]");
+  const gallery = document.querySelector("[data-motion-gallery]");
   const title = document.querySelector("[data-motion-title]");
   const description = document.querySelector("[data-motion-description]");
   const meta = document.querySelector("[data-motion-meta]");
   const tags = document.querySelector("[data-motion-tags]");
   const episodesContainer = document.querySelector("[data-motion-episodes]");
+  const modesContainer = document.querySelector("[data-motion-modes]");
   const closeButtons = document.querySelectorAll("[data-motion-close]");
   let lastTrigger = null;
+  let currentVideoSrc = "";
 
   function youtubeEmbedUrl(url) {
     try {
@@ -69,7 +78,8 @@
         button.setAttribute("aria-current", "true");
       }
       button.addEventListener("click", () => {
-        iframe.src = youtubeEmbedUrl(episode.videoUrl);
+        currentVideoSrc = youtubeEmbedUrl(episode.videoUrl);
+        if (iframe instanceof HTMLIFrameElement) iframe.src = currentVideoSrc;
         episodesContainer.querySelectorAll(".motion-lightbox__episode").forEach((btn) => btn.removeAttribute("aria-current"));
         button.setAttribute("aria-current", "true");
       });
@@ -77,12 +87,72 @@
     });
   }
 
+  function renderGallery(galleryJson) {
+    if (!(gallery instanceof HTMLElement) || !(modesContainer instanceof HTMLElement)) return [];
+    gallery.innerHTML = "";
+
+    let images = [];
+    try {
+      images = galleryJson ? JSON.parse(galleryJson) : [];
+    } catch {
+      images = [];
+    }
+
+    if (!Array.isArray(images) || images.length === 0) {
+      modesContainer.hidden = true;
+      return [];
+    }
+
+    modesContainer.hidden = false;
+
+    images.forEach((src, index) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = `Storyboard frame ${index + 1}`;
+      img.loading = "lazy";
+      gallery.appendChild(img);
+    });
+
+    return images;
+  }
+
+  function setMode(mode) {
+    if (!(iframe instanceof HTMLIFrameElement) || !(media instanceof HTMLElement) || !(gallery instanceof HTMLElement) || !(modesContainer instanceof HTMLElement)) return;
+
+    modesContainer.querySelectorAll(".motion-lightbox__mode").forEach((btn) => {
+      if (btn.getAttribute("data-mode") === mode) btn.setAttribute("aria-current", "true");
+      else btn.removeAttribute("aria-current");
+    });
+
+    if (mode === "storyboards") {
+      media.hidden = true;
+      iframe.removeAttribute("src");
+      gallery.hidden = false;
+      if (episodesContainer instanceof HTMLElement) episodesContainer.hidden = true;
+    } else {
+      media.hidden = false;
+      iframe.src = currentVideoSrc;
+      gallery.hidden = true;
+      if (episodesContainer instanceof HTMLElement) {
+        const hasEpisodes = episodesContainer.children.length > 1;
+        episodesContainer.hidden = !hasEpisodes;
+      }
+    }
+  }
+
   function closeLightbox() {
-    if (!(lightbox instanceof HTMLElement) || !(iframe instanceof HTMLIFrameElement)) return;
+    if (!(lightbox instanceof HTMLElement) || !(iframe instanceof HTMLIFrameElement) || !(media instanceof HTMLElement)) return;
     lightbox.hidden = true;
     iframe.removeAttribute("src");
+    media.hidden = false;
     document.body.classList.remove("menu-open");
     if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
+  }
+
+  if (modesContainer instanceof HTMLElement) {
+    modesContainer.querySelectorAll(".motion-lightbox__mode").forEach((btn) => {
+      btn.addEventListener("click", () => setMode(btn.getAttribute("data-mode") || "video"));
+    });
   }
 
   document.querySelectorAll("[data-motion-trigger]").forEach((trigger) => {
@@ -96,7 +166,10 @@
       setText(meta, [dataset?.year, dataset?.role].filter(Boolean).join(" / "));
       setText(tags, dataset?.tags);
       renderEpisodes(dataset?.episodes, dataset?.videoUrl);
-      iframe.src = youtubeEmbedUrl(dataset?.videoUrl || "");
+      renderGallery(dataset?.gallery);
+      currentVideoSrc = youtubeEmbedUrl(dataset?.videoUrl || "");
+      setMode("video");
+      iframe.src = currentVideoSrc;
       lightbox.hidden = false;
       document.body.classList.add("menu-open");
       const closeButton = lightbox.querySelector("[data-motion-close]");
