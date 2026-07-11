@@ -5,7 +5,7 @@ thumbnail: "https://img.youtube.com/vi/ltkYvKC7tQw/hqdefault.jpg"
 description: "An animated short about Anais, a young Costa Rican girl deciding whether to bring her best friend, a pet turtle named Tiku, on a dangerous journey to the U.S. border — or leave him behind."
 role: "Direction & Key Animation"
 videoUrl: "https://youtu.be/ltkYvKC7tQw"
-gallery:
+storyboards:
   - "/images/motion/caracol-cruzando/storyboards/storyboard-001.webp"
   - "/images/motion/caracol-cruzando/storyboards/storyboard-002.webp"
   - "/images/motion/caracol-cruzando/storyboards/storyboard-003.webp"

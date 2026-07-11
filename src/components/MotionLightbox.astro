@@ -1,17 +1,22 @@
 <div class="motion-lightbox" hidden data-motion-lightbox role="dialog" aria-modal="true" aria-labelledby="motion-lightbox-title">
   <div class="motion-lightbox__backdrop" data-motion-close></div>
   <section class="motion-lightbox__panel">
-    <button class="motion-lightbox__close" type="button" data-motion-close aria-label="Close video">Close</button>
+    <button class="motion-lightbox__close" type="button" data-motion-close aria-label="Close">Close</button>
     <div class="motion-lightbox__media" data-motion-media>
       <iframe data-motion-iframe title="Motion project video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
     <div class="motion-lightbox__gallery" data-motion-gallery hidden></div>
+    <div class="motion-lightbox__zoom" data-motion-zoom hidden>
+      <button class="motion-lightbox__zoom-back" type="button" data-motion-zoom-back>&larr; Back to grid</button>
+      <div class="motion-lightbox__zoom-frame">
+        <button class="motion-lightbox__zoom-nav motion-lightbox__zoom-nav--prev" type="button" data-motion-zoom-prev aria-label="Previous image">&lsaquo;</button>
+        <img data-motion-zoom-img alt="" />
+        <button class="motion-lightbox__zoom-nav motion-lightbox__zoom-nav--next" type="button" data-motion-zoom-next aria-label="Next image">&rsaquo;</button>
+      </div>
+    </div>
     <div class="motion-lightbox__body">
       <h2 id="motion-lightbox-title" data-motion-title></h2>
-      <div class="motion-lightbox__modes" data-motion-modes hidden>
-        <button type="button" class="motion-lightbox__mode" data-mode="video" aria-current="true">Video</button>
-        <button type="button" class="motion-lightbox__mode" data-mode="storyboards">Storyboards</button>
-      </div>
+      <div class="motion-lightbox__modes" data-motion-modes hidden></div>
       <div class="motion-lightbox__episodes" data-motion-episodes hidden></div>
       <p data-motion-description></p>
       <p data-motion-meta></p>
@@ -25,6 +30,11 @@
   const media = document.querySelector("[data-motion-media]");
   const iframe = document.querySelector("[data-motion-iframe]");
   const gallery = document.querySelector("[data-motion-gallery]");
+  const zoom = document.querySelector("[data-motion-zoom]");
+  const zoomImg = document.querySelector("[data-motion-zoom-img]");
+  const zoomBack = document.querySelector("[data-motion-zoom-back]");
+  const zoomPrev = document.querySelector("[data-motion-zoom-prev]");
+  const zoomNext = document.querySelector("[data-motion-zoom-next]");
   const title = document.querySelector("[data-motion-title]");
   const description = document.querySelector("[data-motion-description]");
   const meta = document.querySelector("[data-motion-meta]");
@@ -34,6 +44,8 @@
   const closeButtons = document.querySelectorAll("[data-motion-close]");
   let lastTrigger = null;
   let currentVideoSrc = "";
+  let currentGalleryImages = [];
+  let currentZoomIndex = -1;
 
   function youtubeEmbedUrl(url) {
     try {
@@ -49,6 +61,15 @@
 
   function setText(element, value) {
     if (element instanceof HTMLElement) element.textContent = value || "";
+  }
+
+  function parseImages(json) {
+    try {
+      const parsed = json ? JSON.parse(json) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
 
   function renderEpisodes(episodesJson, fallbackVideoUrl) {
@@ -87,49 +108,55 @@
     });
   }
 
-  function renderGallery(galleryJson) {
-    if (!(gallery instanceof HTMLElement) || !(modesContainer instanceof HTMLElement)) return [];
-    gallery.innerHTML = "";
-
-    let images = [];
-    try {
-      images = galleryJson ? JSON.parse(galleryJson) : [];
-    } catch {
-      images = [];
-    }
-
-    if (!Array.isArray(images) || images.length === 0) {
-      modesContainer.hidden = true;
-      return [];
-    }
-
-    modesContainer.hidden = false;
-
-    images.forEach((src, index) => {
-      const img = document.createElement("img");
-      img.src = src;
-      img.alt = `Storyboard frame ${index + 1}`;
-      img.loading = "lazy";
-      gallery.appendChild(img);
-    });
-
-    return images;
+  function openZoom(images, index) {
+    if (!(zoom instanceof HTMLElement) || !(zoomImg instanceof HTMLImageElement)) return;
+    currentGalleryImages = images;
+    currentZoomIndex = index;
+    zoomImg.src = images[index];
+    zoomImg.alt = `Frame ${index + 1} of ${images.length}`;
+    zoom.hidden = false;
   }
 
-  function setMode(mode) {
+  function closeZoom() {
+    if (!(zoom instanceof HTMLElement)) return;
+    zoom.hidden = true;
+    currentZoomIndex = -1;
+  }
+
+  function stepZoom(delta) {
+    if (currentGalleryImages.length === 0 || !(zoomImg instanceof HTMLImageElement)) return;
+    currentZoomIndex = (currentZoomIndex + delta + currentGalleryImages.length) % currentGalleryImages.length;
+    zoomImg.src = currentGalleryImages[currentZoomIndex];
+    zoomImg.alt = `Frame ${currentZoomIndex + 1} of ${currentGalleryImages.length}`;
+  }
+
+  function renderGalleryGrid(images) {
+    if (!(gallery instanceof HTMLElement)) return;
+    gallery.innerHTML = "";
+    images.forEach((src, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "motion-lightbox__gallery-item";
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = `Frame ${index + 1}`;
+      img.loading = "lazy";
+      button.appendChild(img);
+      button.addEventListener("click", () => openZoom(images, index));
+      gallery.appendChild(button);
+    });
+  }
+
+  function setMode(mode, galleries) {
     if (!(iframe instanceof HTMLIFrameElement) || !(media instanceof HTMLElement) || !(gallery instanceof HTMLElement) || !(modesContainer instanceof HTMLElement)) return;
+    closeZoom();
 
     modesContainer.querySelectorAll(".motion-lightbox__mode").forEach((btn) => {
       if (btn.getAttribute("data-mode") === mode) btn.setAttribute("aria-current", "true");
       else btn.removeAttribute("aria-current");
     });
 
-    if (mode === "storyboards") {
-      media.hidden = true;
-      iframe.removeAttribute("src");
-      gallery.hidden = false;
-      if (episodesContainer instanceof HTMLElement) episodesContainer.hidden = true;
-    } else {
+    if (mode === "video") {
       media.hidden = false;
       iframe.src = currentVideoSrc;
       gallery.hidden = true;
@@ -137,7 +164,39 @@
         const hasEpisodes = episodesContainer.children.length > 1;
         episodesContainer.hidden = !hasEpisodes;
       }
+    } else {
+      media.hidden = true;
+      iframe.removeAttribute("src");
+      gallery.hidden = false;
+      if (episodesContainer instanceof HTMLElement) episodesContainer.hidden = true;
+      renderGalleryGrid(galleries[mode] || []);
     }
+  }
+
+  function renderModes(galleries, hasVideo) {
+    if (!(modesContainer instanceof HTMLElement)) return;
+    modesContainer.innerHTML = "";
+
+    const entries = [];
+    if (hasVideo) entries.push({ key: "video", label: "Video" });
+    if (galleries.storyboards.length > 0) entries.push({ key: "storyboards", label: "Storyboards" });
+    if (galleries.conceptArt.length > 0) entries.push({ key: "conceptArt", label: "Concept Art" });
+
+    if (entries.length < 2) {
+      modesContainer.hidden = true;
+      return;
+    }
+
+    modesContainer.hidden = false;
+    entries.forEach((entry) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "motion-lightbox__mode";
+      button.textContent = entry.label;
+      button.dataset.mode = entry.key;
+      button.addEventListener("click", () => setMode(entry.key, galleries));
+      modesContainer.appendChild(button);
+    });
   }
 
   function closeLightbox() {
@@ -145,15 +204,14 @@
     lightbox.hidden = true;
     iframe.removeAttribute("src");
     media.hidden = false;
+    closeZoom();
     document.body.classList.remove("menu-open");
     if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
   }
 
-  if (modesContainer instanceof HTMLElement) {
-    modesContainer.querySelectorAll(".motion-lightbox__mode").forEach((btn) => {
-      btn.addEventListener("click", () => setMode(btn.getAttribute("data-mode") || "video"));
-    });
-  }
+  if (zoomBack instanceof HTMLElement) zoomBack.addEventListener("click", closeZoom);
+  if (zoomPrev instanceof HTMLElement) zoomPrev.addEventListener("click", () => stepZoom(-1));
+  if (zoomNext instanceof HTMLElement) zoomNext.addEventListener("click", () => stepZoom(1));
 
   document.querySelectorAll("[data-motion-trigger]").forEach((trigger) => {
     trigger.addEventListener("click", () => {
@@ -166,10 +224,23 @@
       setText(meta, [dataset?.year, dataset?.role].filter(Boolean).join(" / "));
       setText(tags, dataset?.tags);
       renderEpisodes(dataset?.episodes, dataset?.videoUrl);
-      renderGallery(dataset?.gallery);
+
+      const galleries = {
+        storyboards: parseImages(dataset?.storyboards),
+        conceptArt: parseImages(dataset?.conceptArt)
+      };
+      const hasVideo = Boolean(dataset?.videoUrl);
+      renderModes(galleries, hasVideo);
+
       currentVideoSrc = youtubeEmbedUrl(dataset?.videoUrl || "");
-      setMode("video");
-      iframe.src = currentVideoSrc;
+      if (hasVideo) {
+        setMode("video", galleries);
+      } else if (galleries.storyboards.length > 0) {
+        setMode("storyboards", galleries);
+      } else if (galleries.conceptArt.length > 0) {
+        setMode("conceptArt", galleries);
+      }
+
       lightbox.hidden = false;
       document.body.classList.add("menu-open");
       const closeButton = lightbox.querySelector("[data-motion-close]");
@@ -180,6 +251,13 @@
   closeButtons.forEach((button) => button.addEventListener("click", closeLightbox));
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeLightbox();
+    if (event.key === "Escape") {
+      if (zoom instanceof HTMLElement && !zoom.hidden) closeZoom();
+      else closeLightbox();
+    }
+    if (zoom instanceof HTMLElement && !zoom.hidden) {
+      if (event.key === "ArrowLeft") stepZoom(-1);
+      if (event.key === "ArrowRight") stepZoom(1);
+    }
   });
 </script>

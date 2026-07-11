@@ -11,7 +11,7 @@ episodes:
     videoUrl: "https://youtu.be/vnsVvQ3NtWs"
   - label: "Episode 3"
     videoUrl: "https://youtu.be/Cwl6kiFc_Jg"
-gallery:
+storyboards:
   - "/images/motion/doctors-for-immigrants/storyboards/storyboard-001.webp"
   - "/images/motion/doctors-for-immigrants/storyboards/storyboard-002.webp"
   - "/images/motion/doctors-for-immigrants/storyboards/storyboard-003.webp"

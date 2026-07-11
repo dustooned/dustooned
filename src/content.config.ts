@@ -16,6 +16,8 @@ const projects = defineCollection({
     projectUrl: z.string().url().optional(),
     embedUrl: z.string().url().optional(),
     gallery: z.array(z.string()).default([]),
+    storyboards: z.array(z.string()).default([]),
+    conceptArt: z.array(z.string()).default([]),
     hero: z.string().optional(),
     heroAspect: z.enum(["16:9", "4:3", "4:5", "1:1", "auto"]).optional(),
     featured: z.boolean().default(false),
