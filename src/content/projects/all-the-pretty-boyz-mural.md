@@ -1,7 +1,7 @@
 ---
 title: "All The Pretty Boyz"
 section: "illustration"
-thumbnail: "/images/illustration/all-the-pretty-boyz-mural/hero.webp"
+thumbnail: "/images/illustration/all-the-pretty-boyz-mural/thumb.webp"
 hero: "/images/illustration/all-the-pretty-boyz-mural/hero.webp"
 description: "Description coming soon."
 order: 10

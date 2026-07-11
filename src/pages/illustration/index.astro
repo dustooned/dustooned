@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageIntro from "../../components/PageIntro.astro";
 import ProjectGrid from "../../components/ProjectGrid.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
+import { contentSlug } from "../../config/content";
 
 const projects = (await getCollection("projects", ({ data }) => data.section === "illustration")).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
@@ -15,18 +16,30 @@ const projects = (await getCollection("projects", ({ data }) => data.section ===
     <PageIntro title="Illustration" description="Images, covers, drawings, design, and visual development." />
     <ProjectGrid>
       {
-        projects.map((project) => (
-          <ProjectCard
-            title={project.data.title}
-            thumbnail={project.data.thumbnail}
-            description={project.data.description}
-            year={project.data.year}
-            role={project.data.role}
-            tags={project.data.tags}
-            isImageLightbox
-            image={project.data.hero || project.data.thumbnail}
-          />
-        ))
+        projects.map((project) =>
+          project.data.gallery.length > 0 ? (
+            <ProjectCard
+              title={project.data.title}
+              href={`/illustration/${contentSlug(project.id)}`}
+              thumbnail={project.data.thumbnail}
+              description={project.data.description}
+              year={project.data.year}
+              role={project.data.role}
+              tags={project.data.tags}
+            />
+          ) : (
+            <ProjectCard
+              title={project.data.title}
+              thumbnail={project.data.thumbnail}
+              description={project.data.description}
+              year={project.data.year}
+              role={project.data.role}
+              tags={project.data.tags}
+              isImageLightbox
+              image={project.data.hero || project.data.thumbnail}
+            />
+          )
+        )
       }
     </ProjectGrid>
   </div>

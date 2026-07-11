@@ -28,6 +28,7 @@ const projects = (await getCollection("projects", ({ data }) => data.section ===
             episodes={project.data.episodes}
             storyboards={project.data.storyboards}
             conceptArt={project.data.conceptArt}
+            projectUrl={project.data.projectUrl}
           />
         ))
       }

@@ -13,7 +13,7 @@ const projects = defineCollection({
     tags: z.array(z.string()).default([]),
     videoUrl: z.string().url().optional(),
     episodes: z.array(z.object({ label: z.string(), videoUrl: z.string().url() })).default([]),
-    projectUrl: z.string().url().optional(),
+    projectUrl: z.string().optional(),
     embedUrl: z.string().url().optional(),
     gallery: z.array(z.string()).default([]),
     storyboards: z.array(z.string()).default([]),

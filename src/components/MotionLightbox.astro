@@ -17,6 +17,7 @@
       <div class="motion-lightbox__modes" data-motion-modes hidden></div>
       <div class="motion-lightbox__episodes" data-motion-episodes hidden></div>
       <p data-motion-description></p>
+      <p data-motion-link hidden></p>
       <p data-motion-meta></p>
       <p data-motion-tags></p>
     </div>
@@ -35,6 +36,7 @@
   const zoomNext = document.querySelector("[data-motion-zoom-next]");
   const title = document.querySelector("[data-motion-title]");
   const description = document.querySelector("[data-motion-description]");
+  const linkContainer = document.querySelector("[data-motion-link]");
   const meta = document.querySelector("[data-motion-meta]");
   const tags = document.querySelector("[data-motion-tags]");
   const episodesContainer = document.querySelector("[data-motion-episodes]");
@@ -59,6 +61,27 @@
 
   function setText(element, value) {
     if (element instanceof HTMLElement) element.textContent = value || "";
+  }
+
+  function renderLink(url) {
+    if (!(linkContainer instanceof HTMLElement)) return;
+    linkContainer.innerHTML = "";
+    if (!url) {
+      linkContainer.hidden = true;
+      return;
+    }
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.className = "button-link";
+    link.textContent = "Learn more";
+    const arrow = document.createElement("span");
+    arrow.setAttribute("aria-hidden", "true");
+    arrow.textContent = "↗";
+    link.appendChild(arrow);
+    linkContainer.appendChild(link);
+    linkContainer.hidden = false;
   }
 
   function parseImages(json) {
@@ -224,6 +247,7 @@
       const dataset = triggerElement?.dataset;
       setText(title, dataset?.title);
       setText(description, dataset?.description);
+      renderLink(dataset?.projectUrl);
       setText(meta, [dataset?.year, dataset?.role].filter(Boolean).join(" / "));
       setText(tags, dataset?.tags);
       renderEpisodes(dataset?.episodes, dataset?.videoUrl);

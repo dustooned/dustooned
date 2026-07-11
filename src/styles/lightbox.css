@@ -61,6 +61,14 @@
   color: var(--color-muted);
 }
 
+.motion-lightbox__body p[data-motion-link] {
+  margin-block: var(--space-3);
+}
+
+.motion-lightbox__body p[data-motion-link][hidden] {
+  display: none;
+}
+
 .motion-lightbox__episodes {
   display: flex;
   flex-wrap: wrap;

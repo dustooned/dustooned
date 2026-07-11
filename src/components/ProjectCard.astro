@@ -14,6 +14,7 @@ type Props = {
   episodes?: { label: string; videoUrl: string }[];
   storyboards?: string[];
   conceptArt?: string[];
+  projectUrl?: string;
   isImageLightbox?: boolean;
   image?: string;
   external?: boolean;
@@ -32,6 +33,7 @@ const {
   episodes = [],
   storyboards = [],
   conceptArt = [],
+  projectUrl,
   isImageLightbox = false,
   image,
   external = false
@@ -53,6 +55,7 @@ const {
       data-episodes={episodes.length > 1 ? JSON.stringify(episodes) : undefined}
       data-storyboards={storyboards.length > 0 ? JSON.stringify(storyboards.map((g) => withBase(g))) : undefined}
       data-concept-art={conceptArt.length > 0 ? JSON.stringify(conceptArt.map((g) => withBase(g))) : undefined}
+      data-project-url={projectUrl ? withBase(projectUrl) : undefined}
     >
       <span class="card__media">
         <img src={withBase(thumbnail)} alt={`${title} thumbnail`} loading="lazy" />
