@@ -14,6 +14,7 @@ type Props = {
   episodes?: { label: string; videoUrl: string }[];
   isImageLightbox?: boolean;
   image?: string;
+  external?: boolean;
 };
 
 const {
@@ -28,7 +29,8 @@ const {
   videoUrl,
   episodes = [],
   isImageLightbox = false,
-  image
+  image,
+  external = false
 } = Astro.props;
 ---
 
@@ -77,13 +79,21 @@ const {
       </span>
     </button>
   ) : (
-    <a class="card project-card" href={withBase(href)}>
+    <a
+      class="card project-card"
+      href={withBase(href)}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+    >
       <span class="card__media">
         <img src={withBase(thumbnail)} alt={`${title} thumbnail`} loading="lazy" />
       </span>
       <span class="card__body">
         <span class="card__meta">{[year, role].filter(Boolean).join(" / ")}</span>
-        <span class="card__title">{title}</span>
+        <span class="card__title">
+          {title}
+          {external && <span class="external-indicator" aria-hidden="true">&nearr;</span>}
+        </span>
         {description && <span class="card__description">{description}</span>}
       </span>
     </a>

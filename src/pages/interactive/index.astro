@@ -4,7 +4,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageIntro from "../../components/PageIntro.astro";
 import ProjectGrid from "../../components/ProjectGrid.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
-import { contentSlug } from "../../config/content";
 
 const projects = (await getCollection("projects", ({ data }) => data.section === "interactive")).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
@@ -19,11 +18,13 @@ const projects = (await getCollection("projects", ({ data }) => data.section ===
         projects.map((project) => (
           <ProjectCard
             title={project.data.title}
-            href={`/interactive/${contentSlug(project.id)}`}
+            href={project.data.projectUrl}
             thumbnail={project.data.thumbnail}
             description={project.data.description}
             year={project.data.year}
             role={project.data.role}
+            tags={project.data.tags}
+            external
           />
         ))
       }
