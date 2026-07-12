@@ -56,8 +56,9 @@ const heroAspect = data.heroAspect ?? "16:9";
     </div>
 
     <div class="cluster">
-      {data.projectUrl && <ExternalLinkButton href={data.projectUrl} label="Open project" />}
+      {data.projectUrl && <ExternalLinkButton href={withBase(data.projectUrl)} label="Open project" />}
       {data.videoUrl && <ExternalLinkButton href={data.videoUrl} label="Watch on YouTube" />}
+      {data.links.map((link) => <ExternalLinkButton href={withBase(link.href)} label={link.label} />)}
     </div>
 
     <MediaGallery images={data.gallery} title={data.title} />

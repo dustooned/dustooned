@@ -15,6 +15,7 @@ const projects = defineCollection({
     episodes: z.array(z.object({ label: z.string(), videoUrl: z.string().url() })).default([]),
     projectUrl: z.string().optional(),
     embedUrl: z.string().url().optional(),
+    links: z.array(z.object({ label: z.string(), href: z.string() })).default([]),
     gallery: z.array(z.string()).default([]),
     storyboards: z.array(z.string()).default([]),
     conceptArt: z.array(z.string()).default([]),

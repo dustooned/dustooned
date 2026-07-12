@@ -9,22 +9,13 @@ tags:
   - comics
   - graphic novel
   - kickstarter
-gallery:
-  - "/images/illustration/walo/pages/page-01.webp"
-  - "/images/illustration/walo/pages/page-02.webp"
-  - "/images/illustration/walo/pages/page-03.webp"
-  - "/images/illustration/walo/pages/page-04.webp"
-  - "/images/illustration/walo/pages/page-05.webp"
-  - "/images/illustration/walo/pages/page-06.webp"
-  - "/images/illustration/walo/pages/page-07.webp"
-  - "/images/illustration/walo/pages/page-08.webp"
-  - "/images/illustration/walo/pages/page-09.webp"
-  - "/images/illustration/walo/pages/page-10.webp"
-  - "/images/illustration/walo/pages/page-11.webp"
-  - "/images/illustration/walo/pages/page-12.webp"
-  - "/images/illustration/walo/pages/page-13.webp"
-  - "/images/illustration/walo/pages/page-15.webp"
-  - "/images/illustration/walo/pages/page-16.webp"
+links:
+  - label: "Successfully Backed on Kickstarter"
+    href: "#"
+  - label: "Official Website"
+    href: "https://staytoonedgfx.com/series.html?s=walo"
+  - label: "Read the First Pages"
+    href: "https://staytoonedgfx.com/series.html?s=walo"
 order: 4
 ---
 

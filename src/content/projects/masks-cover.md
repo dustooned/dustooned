@@ -10,35 +10,11 @@ tags:
   - cover
   - comics
   - thesis
-gallery:
-  - "/images/illustration/masks-cover/pages/page-01.webp"
-  - "/images/illustration/masks-cover/pages/page-02.webp"
-  - "/images/illustration/masks-cover/pages/page-03.webp"
-  - "/images/illustration/masks-cover/pages/page-04.webp"
-  - "/images/illustration/masks-cover/pages/page-05.webp"
-  - "/images/illustration/masks-cover/pages/page-06.webp"
-  - "/images/illustration/masks-cover/pages/page-07.webp"
-  - "/images/illustration/masks-cover/pages/page-08.webp"
-  - "/images/illustration/masks-cover/pages/page-09.webp"
-  - "/images/illustration/masks-cover/pages/page-10.webp"
-  - "/images/illustration/masks-cover/pages/page-11.webp"
-  - "/images/illustration/masks-cover/pages/page-12.webp"
-  - "/images/illustration/masks-cover/pages/page-13.webp"
-  - "/images/illustration/masks-cover/pages/page-14.webp"
-  - "/images/illustration/masks-cover/pages/page-15.webp"
-  - "/images/illustration/masks-cover/pages/page-16.webp"
-  - "/images/illustration/masks-cover/pages/page-17.webp"
-  - "/images/illustration/masks-cover/pages/page-18.webp"
-  - "/images/illustration/masks-cover/pages/page-19.webp"
-  - "/images/illustration/masks-cover/pages/page-20.webp"
-  - "/images/illustration/masks-cover/pages/page-21.webp"
-  - "/images/illustration/masks-cover/pages/page-22.webp"
-  - "/images/illustration/masks-cover/pages/page-23.webp"
-  - "/images/illustration/masks-cover/pages/page-24.webp"
-  - "/images/illustration/masks-cover/pages/page-25.webp"
-  - "/images/illustration/masks-cover/pages/page-26.webp"
-  - "/images/illustration/masks-cover/pages/page-27.webp"
-  - "/images/illustration/masks-cover/pages/page-28.webp"
+links:
+  - label: "Read on StayToonedGFX"
+    href: "https://staytoonedgfx.com/series.html?s=masks"
+  - label: "Watch the Trailer on Motion"
+    href: "/motion"
 order: 1
 ---
 
