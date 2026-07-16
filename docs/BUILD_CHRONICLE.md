@@ -304,6 +304,48 @@ performance regression, plus a separate long-standing issue surfaced:
 
 See `docs/ASSET_GUIDE.md` and `docs/JOURNAL_SYSTEM.md` for the updated reference docs.
 
+## 2026-07-15: Cut over dustooned.com from Squarespace to GitHub Pages
+
+The domain was moved off Squarespace (via GoDaddy DNS) to the GitHub Pages-hosted Astro site,
+motivated by Squarespace's pricing going up. Also added the "pardon our dust" first-visit
+notice (see that commit) ahead of this cutover so visitors mid-transition get context.
+
+Sequence, in order (this order matters — see the gotchas below for why):
+
+1. **DNS at GoDaddy**: deleted the 4 Squarespace A records on the apex
+   (`198.185.159.144/145`, `198.49.23.144/145`) and replaced them with GitHub Pages' 4 A
+   records (`185.199.108-111.153`). Edited the existing `www` CNAME from
+   `ext-sq.squarespace.com.` to `dustooned.github.io.`. Everything else in the zone (Google
+   Workspace MX/SPF/DKIM/DMARC, GoDaddy email/payment CNAMEs) was left untouched — see
+   `docs/DEPLOYMENT.md` for the full list.
+2. **GitHub repo Settings -> Pages -> Custom domain**: set to `www.dustooned.com` (manual UI
+   step, triggers DNS verification + SSL cert provisioning).
+3. **Repo**: added `public/CNAME` (`www.dustooned.com`) so the deployed artifact itself
+   declares the custom domain, and flipped `.github/workflows/deploy.yml`'s build env from
+   `SITE_URL=https://dustooned.github.io` / `BASE_PATH=/dustooned` (the old project-pages
+   temp URL) to `SITE_URL=https://www.dustooned.com` / `BASE_PATH=/` — committed and pushed
+   only after the DNS + custom-domain steps above were confirmed live, to avoid a window
+   where the temp URL breaks before the custom domain is ready to take over.
+
+Two false alarms during verification, both worth remembering:
+
+- Testing the `BASE_PATH=/` build locally in Git Bash produced `TypeError: Missing parameter:
+  slug` on `/illustration/all-the-pretty-boyz-mural`. Root cause: Git Bash's MSYS layer
+  silently rewrites `/`-like env var values into Windows paths — `BASE_PATH=/` was actually
+  arriving in Node as `C:/Program Files/Git/`. Not a real bug; confirmed by re-running the
+  same build in PowerShell (works cleanly) and by `BASE_PATH=/ node -e
+  "console.log(process.env.BASE_PATH)"` printing the mangled path in Git Bash. See
+  `docs/DEPLOYMENT.md`.
+- Immediately after the redeploy, the live domain looked unstyled with 404s on
+  `/dustooned/_astro/...` paths in an already-open browser tab. A cache-busted `fetch(url, {
+  cache: "no-store" })` showed the server was already serving the corrected build — it was
+  just the open tab holding onto the pre-cutover cached page/asset URLs. A hard refresh
+  resolved it. Don't assume "still looks broken right after a deploy" means the deploy
+  failed — check the raw server response first.
+
+See `docs/DEPLOYMENT.md` for the durable reference (DNS record list, gotchas, validation
+steps); this entry is the narrative of how it happened.
+
 ## Next Best Work
 
 Recommended next steps:

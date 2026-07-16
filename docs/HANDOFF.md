@@ -71,17 +71,16 @@ GitHub Pages Source is confirmed set to `GitHub Actions` in repository settings 
 
 If this setting ever reverts (e.g. after a repo transfer or Pages reset), redo that switch before debugging anything else — a "plain/static text" live site or a failing `pages-build-deployment` run is the symptom.
 
-Temporary URL:
-
-```txt
-https://dustooned.github.io/dustooned/
-```
-
-Final intended URL:
+Live URL (custom domain, cut over 2026-07-15 from Squarespace/GoDaddy):
 
 ```txt
 https://www.dustooned.com
 ```
+
+The old temporary project-pages URL (`https://dustooned.github.io/dustooned/`) is no longer
+what the build targets — see `docs/DEPLOYMENT.md` for the full DNS/custom-domain setup,
+including which GoDaddy DNS records are safe to touch and which run live Google Workspace
+email for the domain (do not touch those without checking that doc first).
 
 ## How To Continue Safely
 
@@ -148,12 +147,13 @@ Still unfinished:
 - Resume page text
 - newsletter provider/integration (currently a static callout)
 - StayToonedGFX comics site (Walo/Masks external links are placeholders until this exists)
-- final custom domain setup
 
 Done:
 
 - final logo (`public/logos/logo.svg`, real vector SVG, nav CSS auto-sizes it — see
   `docs/ASSET_GUIDE.md`)
+- custom domain (`https://www.dustooned.com`, cut over from Squarespace/GoDaddy — see
+  `docs/DEPLOYMENT.md`)
 
 ## Gotchas (read before touching thumbnails, project heroes, or the logo)
 
@@ -178,6 +178,15 @@ Done:
   `src/styles/nav.css`) — never manually resize a logo file before dropping it into
   `public/logos/`. Prefer SVG; check a fresh export isn't a raster image smuggled inside an
   `<svg>` wrapper (defeats scaling).
+- **Never test `BASE_PATH`/`SITE_URL` overrides in Git Bash on Windows.** MSYS silently
+  mangles `BASE_PATH=/` into a Windows filesystem path before Node sees it, which breaks
+  static-path generation for at least one route with a confusing `Missing parameter: slug`
+  error. Use PowerShell, or just `npm run build` with no overrides (the defaults already
+  match production). See `docs/DEPLOYMENT.md`.
+- **The live domain's GoDaddy DNS zone also carries active Google Workspace email** (MX/SPF/
+  DKIM/DMARC) plus several GoDaddy email/payment CNAMEs. Only the 4 apex `A` records and the
+  `www` `CNAME` are website-related — see `docs/DEPLOYMENT.md` for the full list of what not
+  to touch before making any DNS change.
 
 ## Design Cautions
 
