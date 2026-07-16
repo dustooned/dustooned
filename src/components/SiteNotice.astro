@@ -1,0 +1,52 @@
+---
+import { SITE_NOTICE } from "../config/site";
+
+const storageKey = `dustooned-notice-dismissed-v${SITE_NOTICE.version}`;
+---
+
+{
+  SITE_NOTICE.enabled && (
+    <div class="site-notice" hidden data-site-notice data-storage-key={storageKey} role="dialog" aria-modal="true" aria-labelledby="site-notice-title">
+      <div class="site-notice__backdrop" />
+      <section class="site-notice__panel">
+        <p class="site-notice__emoji" aria-hidden="true">
+          {SITE_NOTICE.emoji}
+        </p>
+        <h2 id="site-notice-title">{SITE_NOTICE.message}</h2>
+        <button class="site-notice__cta" type="button" data-site-notice-dismiss>
+          {SITE_NOTICE.ctaLabel}
+        </button>
+      </section>
+    </div>
+  )
+}
+
+<script>
+  const notice = document.querySelector("[data-site-notice]");
+  if (notice instanceof HTMLElement) {
+    const storageKey = notice.dataset.storageKey || "dustooned-notice-dismissed";
+    const dismissButton = notice.querySelector("[data-site-notice-dismiss]");
+
+    let alreadyDismissed = false;
+    try {
+      alreadyDismissed = localStorage.getItem(storageKey) === "true";
+    } catch {
+      alreadyDismissed = false;
+    }
+
+    if (!alreadyDismissed) {
+      notice.hidden = false;
+      document.body.classList.add("menu-open");
+    }
+
+    dismissButton?.addEventListener("click", () => {
+      notice.hidden = true;
+      document.body.classList.remove("menu-open");
+      try {
+        localStorage.setItem(storageKey, "true");
+      } catch {
+        // localStorage unavailable (private browsing, etc.) — notice just reappears next visit.
+      }
+    });
+  }
+</script>

@@ -6,6 +6,7 @@ import PageTransition from "../components/PageTransition.astro";
 import BubbleInteraction from "../components/BubbleInteraction.astro";
 import MotionLightbox from "../components/MotionLightbox.astro";
 import ImageLightbox from "../components/ImageLightbox.astro";
+import SiteNotice from "../components/SiteNotice.astro";
 import { SITE, VISUAL_MOOD } from "../config/site";
 import "../styles/global.css";
 
@@ -27,6 +28,7 @@ const pageTitle = title ? `${title} | ${SITE.title}` : SITE.title;
     <title>{pageTitle}</title>
   </head>
   <body>
+    <SiteNotice />
     <BubbleInteraction />
     <PageTransition />
     <SiteHeader />

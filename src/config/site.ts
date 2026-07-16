@@ -9,6 +9,17 @@ export const SITE = {
 // Options: "clean", "poster", "sketchbook", "comic"
 export const VISUAL_MOOD = "poster";
 
+// Temporary first-visit notice while the site is mid-redesign. Set enabled: false (or delete
+// <SiteNotice /> from BaseLayout.astro + this file's export + SiteNotice.astro) once the
+// redesign settles down. Bump `version` to show it again to visitors who already dismissed it.
+export const SITE_NOTICE = {
+  enabled: true,
+  version: "1",
+  emoji: "🚧",
+  message: "Pardon our dust — Dustooned is mid-move and getting a fresh coat of paint.",
+  ctaLabel: "Continue to the site"
+};
+
 export const EXTERNAL_LINKS = {
   sequential: "https://www.staytoonedgfx.com/",
   education: "https://github.com/dustooned/lbcc-student-work"
