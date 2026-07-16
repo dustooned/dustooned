@@ -274,6 +274,36 @@ Several small fixes landed together:
 See `docs/CONTENT_MODEL.md`, `docs/ASSET_GUIDE.md`, `docs/JOURNAL_SYSTEM.md`, and
 `docs/HANDOFF.md` for the corresponding reference docs and gotchas.
 
+## 2026-07-15 (later): Fix animated-GIF thumbnail lag, decouple journal hero from grid thumb
+
+Follow-up to the same day's GIF-thumbnail-freeze fix — the fix itself introduced a
+performance regression, plus a separate long-standing issue surfaced:
+
+- **GIF thumbnails were lagging/loading slowly** (reported specifically on Tucker Animation
+  and Paiz Animation). Root cause: the earlier fix generated animated `thumb.webp` at the
+  same 1600x1200 size used for static thumbnails. Animated-webp cost scales with pixel count
+  per frame, so this produced multi-megabyte files — Paiz Animation's thumbnail alone was
+  ~8MB, Grandma's Room ~10.5MB. Added a separate, much smaller target specifically for GIF
+  sources in `scripts/generate-smart-thumbnails.mjs` (`GIF_THUMB_W/H = 640x480`, quality 65
+  vs. 1600x1200/82 for static sources) and regenerated all affected thumbnails — sizes
+  dropped roughly 4-6x across the board (e.g. Tucker Animation 3.4MB → 892KB, Paiz Animation
+  8MB → 1.77MB).
+
+- **Journal post pages were showing the cropped grid thumbnail as the hero, not the original
+  image.** `JournalLayout.astro` had always rendered `data.thumbnail` — the same cropped
+  1600x1200 "cover"-fit asset used in the `/journal` grid — as the large image at the top of
+  the post itself. Added a new optional `image` field to the journal schema
+  (`src/content.config.ts`) pointing at the original, unresized `image-1.*` source file.
+  `generate-smart-thumbnails.mjs` now writes both `thumbnail` and `image` frontmatter fields
+  for any journal post with a local source image; `JournalLayout.astro` renders
+  `data.image ?? data.thumbnail`, falling back to the grid thumbnail only for video-embed
+  posts that have no local image (e.g. Dialog Boxes, Tik Tok Men — Luke Warm, which use a
+  YouTube thumbnail instead). The post hero already gets the desktop-width/height cap added
+  earlier (`.project-hero__image:not([data-aspect])` in `layout.css`), so this doesn't
+  reintroduce the oversized-image problem.
+
+See `docs/ASSET_GUIDE.md` and `docs/JOURNAL_SYSTEM.md` for the updated reference docs.
+
 ## Next Best Work
 
 Recommended next steps:

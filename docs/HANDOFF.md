@@ -159,12 +159,14 @@ Done:
 
 - **Regenerate thumbnails with the script, never by hand.** `node
   scripts/generate-smart-thumbnails.mjs` is the only path that produces correct output for
-  GIF sources (animated webp) vs static sources (cropped webp via attention-crop). Hand-
-  exporting a `thumb.webp` will silently freeze any GIF-sourced thumbnail — see
-  `docs/ASSET_GUIDE.md` for why that broke before and what code enforces it now.
-- **`JournalLayout.astro` reuses `thumbnail` as the post's hero image**, not just the grid
-  card thumbnail. A frozen/static `thumbnail` on a GIF-backed post is visible on the post
-  page itself, not just in the `/journal` grid.
+  GIF sources (small animated webp, 640x480) vs static sources (1600x1200 cropped webp via
+  attention-crop). Hand-exporting a `thumb.webp` will silently freeze any GIF-sourced
+  thumbnail, or — if you export it oversized — reintroduce the multi-megabyte grid-lag bug.
+  See `docs/ASSET_GUIDE.md` for both fixes and the exact size constants.
+- **Journal `thumbnail` (grid card) and `image` (post hero) are separate fields/assets.**
+  `JournalLayout.astro` renders `data.image` (the original, uncropped source) as the post
+  hero and only falls back to `thumbnail` for video-only posts with no local image. The
+  generator script writes both automatically — see `docs/JOURNAL_SYSTEM.md`.
 - **Portrait/cover project heroes (`heroAspect: "auto"`) are width- and height-capped** in
   `src/styles/layout.css` (`.project-hero__image:not([data-aspect])`) so a tall book cover
   doesn't render 1500px+ tall on desktop. Fixed-aspect heroes (`16:9`/`4:3`/`4:5`/`1:1`) are

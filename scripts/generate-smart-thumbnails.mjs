@@ -5,6 +5,13 @@ import path from "node:path";
 const TARGET_W = 1600;
 const TARGET_H = 1200;
 
+// Animated (GIF-sourced) thumbnails are far more expensive per pixel than static ones —
+// every frame gets re-encoded at the target size. Keep these small: grid cards only ever
+// render a few hundred px wide, so this is still plenty sharp.
+const GIF_THUMB_W = 640;
+const GIF_THUMB_H = 480;
+const GIF_THUMB_QUALITY = 65;
+
 async function isDir(p) {
   try {
     return (await stat(p)).isDirectory();
@@ -17,8 +24,8 @@ async function generateThumb(srcPath, outPath) {
   const isGif = srcPath.toLowerCase().endsWith(".gif");
   if (isGif) {
     await sharp(srcPath, { animated: true })
-      .resize({ width: TARGET_W, height: TARGET_H, fit: "cover", position: "centre" })
-      .webp({ quality: 82 })
+      .resize({ width: GIF_THUMB_W, height: GIF_THUMB_H, fit: "cover", position: "centre" })
+      .webp({ quality: GIF_THUMB_QUALITY })
       .toFile(outPath);
     return;
   }
@@ -26,6 +33,10 @@ async function generateThumb(srcPath, outPath) {
     .resize({ width: TARGET_W, height: TARGET_H, fit: "cover", position: sharp.strategy.attention })
     .webp({ quality: 82 })
     .toFile(outPath);
+}
+
+function toPublicUrl(filePath) {
+  return `/${path.relative("public", filePath).split(path.sep).join("/")}`;
 }
 
 async function processSection(baseDir, sourceFileName, updateFrontmatter) {
@@ -47,24 +58,34 @@ async function processSection(baseDir, sourceFileName, updateFrontmatter) {
     try {
       await generateThumb(srcPath, thumbPath);
       console.log(`OK   ${dir}`);
-      await updateFrontmatter(dir, `/${path.relative("public", thumbPath).split(path.sep).join("/")}`);
+      await updateFrontmatter(dir, toPublicUrl(thumbPath), toPublicUrl(srcPath));
     } catch (err) {
       console.error(`FAIL ${dir}: ${err.message}`);
     }
   }
 }
 
+function upsertField(content, field, value) {
+  const fieldRe = new RegExp(`\\n${field}: "[^"]*"\\n`);
+  if (fieldRe.test(content)) {
+    return content.replace(fieldRe, `\n${field}: "${value}"\n`);
+  }
+  // Insert right after the thumbnail line so field order stays predictable.
+  return content.replace(/\nthumbnail: "[^"]*"\n/, (match) => `${match}${field}: "${value}"\n`);
+}
+
 async function updateIllustrationFrontmatter(slug, thumbUrl) {
   const mdPath = `src/content/projects/${slug}.md`;
   const content = await readFile(mdPath, "utf8");
-  const updated = content.replace(/\nthumbnail: "[^"]*"\n/, `\nthumbnail: "${thumbUrl}"\n`);
+  const updated = upsertField(content, "thumbnail", thumbUrl);
   if (updated !== content) await writeFile(mdPath, updated, "utf8");
 }
 
-async function updateJournalFrontmatter(slug, thumbUrl) {
+async function updateJournalFrontmatter(slug, thumbUrl, imageUrl) {
   const mdPath = `src/content/journal/${slug}.mdx`;
   const content = await readFile(mdPath, "utf8");
-  const updated = content.replace(/\nthumbnail: "[^"]*"\n/, `\nthumbnail: "${thumbUrl}"\n`);
+  let updated = upsertField(content, "thumbnail", thumbUrl);
+  updated = upsertField(updated, "image", imageUrl);
   if (updated !== content) await writeFile(mdPath, updated, "utf8");
 }
 

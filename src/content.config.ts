@@ -32,6 +32,7 @@ const journal = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     thumbnail: z.string().optional(),
+    image: z.string().optional(),
     excerpt: z.string(),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false)
