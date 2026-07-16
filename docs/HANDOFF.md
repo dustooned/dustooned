@@ -24,7 +24,12 @@ Important files:
 
 ## Next Instruction
 
-Live deploy is confirmed working, and Motion is fully populated with real content. Next up: replace a placeholder Illustration project with a real one. This should test:
+Live deploy is confirmed working, and Motion is fully populated with real content. Walo and
+Masks (Illustration) are now real, simplified entries (cover image + external `links` buttons,
+see `docs/CONTENT_MODEL.md`) rather than full internal galleries — their StayToonedGFX/
+Kickstarter links are placeholders (`href: "#"`) until StayToonedGFX itself is built. Next up:
+replace the remaining placeholder Illustration/Interactive projects with real content. This
+should test:
 
 - real thumbnail
 - real hero image
@@ -135,14 +140,42 @@ Done:
 
 Still unfinished:
 
-- Illustration: real thumbnails, hero images, descriptions
+- Illustration: most entries still need real thumbnails/heroes/descriptions (Walo and Masks
+  are done; see `docs/CONTENT_MODEL.md` for their `links`-based pattern)
 - Interactive: real thumbnails, hero images, descriptions
 - Contact page copy
 - CV page text
 - Resume page text
 - newsletter provider/integration (currently a static callout)
-- final logo assets
+- StayToonedGFX comics site (Walo/Masks external links are placeholders until this exists)
 - final custom domain setup
+
+Done:
+
+- final logo (`public/logos/logo.svg`, real vector SVG, nav CSS auto-sizes it — see
+  `docs/ASSET_GUIDE.md`)
+
+## Gotchas (read before touching thumbnails, project heroes, or the logo)
+
+- **Regenerate thumbnails with the script, never by hand.** `node
+  scripts/generate-smart-thumbnails.mjs` is the only path that produces correct output for
+  GIF sources (animated webp) vs static sources (cropped webp via attention-crop). Hand-
+  exporting a `thumb.webp` will silently freeze any GIF-sourced thumbnail — see
+  `docs/ASSET_GUIDE.md` for why that broke before and what code enforces it now.
+- **`JournalLayout.astro` reuses `thumbnail` as the post's hero image**, not just the grid
+  card thumbnail. A frozen/static `thumbnail` on a GIF-backed post is visible on the post
+  page itself, not just in the `/journal` grid.
+- **Portrait/cover project heroes (`heroAspect: "auto"`) are width- and height-capped** in
+  `src/styles/layout.css` (`.project-hero__image:not([data-aspect])`) so a tall book cover
+  doesn't render 1500px+ tall on desktop. Fixed-aspect heroes (`16:9`/`4:3`/`4:5`/`1:1`) are
+  unaffected — don't "fix" this by touching the fixed-aspect rules.
+  - `illustration/index.astro` only routes a project to its own `/illustration/[slug]` page
+    if it has a non-empty `gallery` **or** a non-empty `links` array — otherwise it renders
+    as a lightbox-only card with no detail page. See `docs/CONTENT_MODEL.md`.
+- **The nav logo auto-sizes via CSS** (`height: 44px`/`38px`; `width: auto` in
+  `src/styles/nav.css`) — never manually resize a logo file before dropping it into
+  `public/logos/`. Prefer SVG; check a fresh export isn't a raster image smuggled inside an
+  `<svg>` wrapper (defeats scaling).
 
 ## Design Cautions
 

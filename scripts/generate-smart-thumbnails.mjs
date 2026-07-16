@@ -15,7 +15,14 @@ async function isDir(p) {
 
 async function generateThumb(srcPath, outPath) {
   const isGif = srcPath.toLowerCase().endsWith(".gif");
-  await sharp(srcPath, isGif ? { animated: false } : undefined)
+  if (isGif) {
+    await sharp(srcPath, { animated: true })
+      .resize({ width: TARGET_W, height: TARGET_H, fit: "cover", position: "centre" })
+      .webp({ quality: 82 })
+      .toFile(outPath);
+    return;
+  }
+  await sharp(srcPath)
     .resize({ width: TARGET_W, height: TARGET_H, fit: "cover", position: sharp.strategy.attention })
     .webp({ quality: 82 })
     .toFile(outPath);
