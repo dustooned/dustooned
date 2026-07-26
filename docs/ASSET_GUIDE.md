@@ -93,9 +93,11 @@ This only applies when `heroAspect` is `"auto"`. Fixed-aspect heroes (`16:9`, `4
 
 Logo files live in `public/logos/`:
 
-- `logo.svg` — desktop nav mark, referenced in `SiteHeader.astro`
-- `logo-wordmark.svg` — mobile nav wordmark
-- `logo-mark.svg` — spare/alternate mark, not currently wired into a component
+- `logo.svg` — the real logo mark, used in **both** desktop and mobile nav (`SiteHeader.astro`
+  references it twice, once per breakpoint)
+- `logo-wordmark.svg`, `logo-mark.svg` — leftover scaffold placeholders (plain rect + generic
+  text/shape), not referenced anywhere in the codebase. Safe to delete; kept around only in
+  case they're wanted for something else later.
 
 Nav CSS already auto-sizes whatever is dropped in (`height: 44px; width: auto;` desktop,
 `height: 38px; width: auto;` mobile in `src/styles/nav.css`), so you do not need to
@@ -104,3 +106,22 @@ losslessly at any size); if using a raster export, target roughly 2x the display
 (~100–150px tall) for retina sharpness. Verify a fresh SVG export doesn't contain a raster
 `<image>`/base64 payload disguised as an SVG (common from some export tools) — that would
 defeat the point of using a vector format.
+
+### Gotcha: check exported SVG file size — auto-traced art can be enormous
+
+`logo.svg` shipped at **188KB** — the real logo is a detailed illustration (not a simple flat
+mark), exported with ~786 individual `<path>` elements and long, high-precision coordinate
+strings, likely from an auto-trace of raster artwork. That size is paid on *every* page load
+(the header is site-wide and sticky), so it's worth checking any replacement logo's file size
+before committing it. If it's more than ~20-30KB, run it through SVGO with reduced coordinate
+precision — the geometry only needs to survive being visible at ~40px display size:
+
+```sh
+npx svgo public/logos/logo.svg -o public/logos/logo.svg --precision=0
+```
+
+(the repo already has `svgo` available via `node_modules/.bin`). This cut `logo.svg` from
+188KB to 66.7KB with zero visible difference, verified by rasterizing both the original and
+optimized SVG at matching sizes and comparing. Higher precision loss than `--precision=0` may
+start to show at larger display sizes — re-check visually if you use this on an asset shown
+bigger than the nav logo.
