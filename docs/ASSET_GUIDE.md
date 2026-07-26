@@ -63,12 +63,46 @@ editing the script.
 ### Gotcha: journal `thumbnail` (grid) vs. `image` (post hero) are different assets
 
 `JournalLayout.astro` does **not** reuse the cropped grid `thumbnail` as the post's hero
-image. It renders `data.image` (the original, unresized/uncropped `image-1.*` source file)
-and only falls back to `thumbnail` if `image` isn't set (e.g. video-embed-only posts with a
-YouTube thumbnail and no local image). The generator script writes both fields for any post
-with a local `image-1.*` source — see `docs/JOURNAL_SYSTEM.md`. If you ever see a journal
-post's hero looking cropped/zoomed like its grid card, check whether `image` is missing from
-its frontmatter.
+image. It renders `data.image` and only falls back to `thumbnail` if `image` isn't set (e.g.
+video-embed-only posts with a YouTube thumbnail and no local image). The generator script
+writes both fields for any post with a local `image-1.*` source — see
+`docs/JOURNAL_SYSTEM.md`. If you ever see a journal post's hero looking cropped/zoomed like
+its grid card, check whether `image` is missing from its frontmatter.
+
+For **static** sources, `image` points at the original, unresized/uncropped `image-1.*` file
+directly — no processing needed, those are already reasonably sized.
+
+For **GIF** sources, `image` does **not** point at the raw original — see the next gotcha for
+why, this was a real bug (visible scroll jank), not a hypothetical one.
+
+### Gotcha: a "only loads once" GIF hero can still cause scroll jank
+
+A raw multi-frame GIF used as a journal post hero caused visible lag when scrolling the post,
+even though the file itself only downloads once. The reason: browsers must keep
+decoding/repainting *every frame* of an active GIF animation for as long as it's on screen,
+and that cost scales with pixel count x frame count — not download size. The actual hero
+sources here were ~1000px wide with 25-85+ frames, displayed squeezed down to ~480px by the
+`heroAspect`/`.project-hero__image` CSS cap, so almost all of that decode cost was pure
+waste.
+
+Fix (in `generate-smart-thumbnails.mjs`): resize GIF sources down to `GIF_HERO_MAX_EDGE =
+640` (matching the grid thumbnail's already-proven-fine width, still headroom over the 480px
+display cap) before re-encoding to animated webp at `GIF_HERO_QUALITY = 70`, and **pick
+whichever of (resized webp, original gif) is actually smaller** — animated webp is not always
+smaller than GIF at the same resolution (flat-color/line-art content can compress *better* as
+GIF), so blindly converting can make things worse, not better. Confirmed empirically: 6 of 7
+existing GIF-backed posts got a 30-71% smaller hero after this change, one (`grandmas-room-1`,
+already only 400x274) correctly kept its raw GIF because the generated webp came out larger
+with no resolution benefit (source was already under the 640px cap).
+
+The same over-resolution problem applies to any GIF referenced directly in a `<MediaGallery>`
+inside a journal post body (not just the post's designated `image-1`) — e.g. a post embedding
+7 raw GIFs side by side is 7x the decode cost on one page. `generate-smart-thumbnails.mjs`
+also scans every journal folder for `image-N.gif` (N > 1), applies the same
+resize-and-pick-smaller treatment, and rewrites the MDX file's `<MediaGallery images={[...]}>`
+array in place to point at whichever version won. Re-run the script after adding new gallery
+GIFs to a journal post; don't assume a raw GIF dropped into a gallery is fine just because
+it's "just an image".
 
 ### Gotcha: portrait/cover hero images and desktop width
 

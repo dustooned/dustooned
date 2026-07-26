@@ -164,9 +164,18 @@ Done:
   thumbnail, or — if you export it oversized — reintroduce the multi-megabyte grid-lag bug.
   See `docs/ASSET_GUIDE.md` for both fixes and the exact size constants.
 - **Journal `thumbnail` (grid card) and `image` (post hero) are separate fields/assets.**
-  `JournalLayout.astro` renders `data.image` (the original, uncropped source) as the post
-  hero and only falls back to `thumbnail` for video-only posts with no local image. The
-  generator script writes both automatically — see `docs/JOURNAL_SYSTEM.md`.
+  `JournalLayout.astro` renders `data.image` as the post hero and only falls back to
+  `thumbnail` for video-only posts with no local image. For static sources `image` is the
+  original, uncropped source; for GIF sources it's a resized+re-encoded version, **not** the
+  raw original — see the next gotcha. The generator script writes both automatically — see
+  `docs/JOURNAL_SYSTEM.md`.
+- **A GIF that "only downloads once" can still cause scroll jank.** Decode/repaint cost for
+  an animated GIF is paid continuously while it's on screen, not just at download time — a
+  raw ~1000px, 25-85-frame GIF used as a journal post hero (squeezed to ~480px via CSS)
+  caused real, reported scroll lag. `generate-smart-thumbnails.mjs` resizes any GIF hero (and
+  any extra GIFs referenced in a journal `<MediaGallery>`) to 640px before re-encoding, and
+  picks whichever of (resized webp, original gif) is smaller — don't assume webp always wins;
+  it doesn't for flat-color/line-art content at the same resolution. See `docs/ASSET_GUIDE.md`.
 - **Portrait/cover project heroes (`heroAspect: "auto"`) are width- and height-capped** in
   `src/styles/layout.css` (`.project-hero__image:not([data-aspect])`) so a tall book cover
   doesn't render 1500px+ tall on desktop. Fixed-aspect heroes (`16:9`/`4:3`/`4:5`/`1:1`) are

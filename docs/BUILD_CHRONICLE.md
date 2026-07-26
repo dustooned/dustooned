@@ -346,6 +346,45 @@ Two false alarms during verification, both worth remembering:
 See `docs/DEPLOYMENT.md` for the durable reference (DNS record list, gotchas, validation
 steps); this entry is the narrative of how it happened.
 
+## 2026-07-25: Fix scroll jank from GIF journal heroes, optimize logo.svg
+
+Two unrelated performance reports landed close together and both turned out to be oversized
+assets loaded site-wide or per-page.
+
+**Logo**: the nav logo (`public/logos/logo.svg`, loaded on every page via the sticky header)
+was 188KB — a detailed illustration exported with ~786 raw `<path>` elements at full
+coordinate precision, invisible at the ~40px render size. Ran it through `svgo` with reduced
+path precision (`--precision=0`): 188KB -> 66.7KB, visually identical (verified by rasterizing
+both versions at matching sizes and comparing). Also switched the mobile nav to use this same
+`logo.svg` instead of the separate, still-placeholder `logo-wordmark.svg` it had been showing
+since scaffold (a plain rect + generic Arial text, never replaced when the real logo was
+dropped in) — this was the "goes back to a placeholder on shrink" bug reported separately.
+
+**Journal post scroll lag**: an earlier fix (see the entry above, "decouple journal hero from
+grid thumb") made journal post pages show the original, unresized source image as the hero
+instead of the cropped grid thumbnail — correct for static images, but for the ~7 GIF-backed
+posts this meant a full-resolution (~1000px), 25-85-frame raw GIF as the hero, squeezed down
+to ~480px via CSS. That caused visible scroll jank: GIF decode/repaint cost is paid
+continuously while the animation is on screen, not just once at download time, so "it only
+loads once" didn't save anything. Fixed by having `generate-smart-thumbnails.mjs` resize GIF
+hero sources to 640px (matching the grid thumbnail's already-fine width) before re-encoding to
+animated webp, and picking whichever of (resized webp, original gif) is actually smaller —
+animated webp isn't always smaller than GIF at the same resolution for flat-color/line-art
+content, confirmed empirically when a naive "always convert" first attempt made 2 of 7 files
+larger. Extended the same fix to GIFs referenced directly in journal `<MediaGallery>` bodies
+(not just the post's main `image-1`) — `dos-alas-studios-gifs` had 7 raw GIFs embedded
+directly, ~3.4MB combined, now ~2MB and each individually much lower-resolution.
+
+The same root cause existed on the Illustration side too: the "IT" project's `hero.gif`
+(2.43MB, 1000x1200, 11 frames) got the identical resize-and-reencode treatment (now
+`hero.webp`, 787KB, 533x640) and its content file's `hero:` field was updated to match —
+`generate-smart-thumbnails.mjs`'s illustration pass generates this file automatically for any
+gif-sourced hero, but only the journal pass auto-updates frontmatter for it; the illustration
+`hero:` field still needs a manual one-line edit when this happens; not a wired-up
+auto-detection.
+
+See `docs/ASSET_GUIDE.md` and `docs/JOURNAL_SYSTEM.md` for the full technical gotchas.
+
 ## Next Best Work
 
 Recommended next steps:
