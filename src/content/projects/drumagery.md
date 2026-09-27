@@ -1,8 +1,8 @@
 ---
 title: "Drumagery"
 section: "interactive"
-thumbnail: "/images/interactive/drumagery/thumb.svg"
-hero: "/images/interactive/drumagery/hero.svg"
+thumbnail: "/images/interactive/drumagery/thumb.webp"
+hero: "/images/interactive/drumagery/hero.webp"
 description: "A browser-based playable visual instrument. Trigger image-sequence loops, procedural screensavers, and glitch effects live via keyboard, touch, or a MIDI controller. Built with Vite, TypeScript, and PixiJS."
 year: "2026"
 role: "Design & development"

@@ -1,8 +1,8 @@
 ---
 title: "Dream Xtreme"
 section: "interactive"
-thumbnail: "/images/interactive/dxe/thumb.svg"
-hero: "/images/interactive/dxe/hero.svg"
+thumbnail: "/images/interactive/dxe/thumb.webp"
+hero: "/images/interactive/dxe/hero.webp"
 description: "An episodic interactive zine. Each chapter is a self-contained short story played with a swipe, tap, or click. No UI framework, deployed as a static site."
 year: "2026"
 role: "Design & development"

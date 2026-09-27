@@ -1,8 +1,8 @@
 ---
 title: "Kit Forge"
 section: "interactive"
-thumbnail: "/images/interactive/kit-forge/thumb.svg"
-hero: "/images/interactive/kit-forge/hero.svg"
+thumbnail: "/images/interactive/kit-forge/thumb.webp"
+hero: "/images/interactive/kit-forge/hero.webp"
 description: "A browser-based board game asset maker for classroom use. Students design cards, pieces, and boards in a layered compositor and export a print-and-play kit, no installs or accounts required."
 year: "2026"
 role: "Design & development"

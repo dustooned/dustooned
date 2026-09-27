@@ -1,8 +1,8 @@
 ---
 title: "Doomteenth"
 section: "interactive"
-thumbnail: "/images/interactive/doomteenth/thumb.svg"
-hero: "/images/interactive/doomteenth/hero.svg"
+thumbnail: "/images/interactive/doomteenth/thumb.webp"
+hero: "/images/interactive/doomteenth/hero.webp"
 description: "A one-page event website design: dark, editorial layout with sections for event listings, host background, media, and newsletter signup."
 year: "2025"
 role: "Design & development"

@@ -1,8 +1,8 @@
 ---
 title: "Cyber Surfer"
 section: "interactive"
-thumbnail: "/images/interactive/cyber-surfer/thumb.svg"
-hero: "/images/interactive/cyber-surfer/hero.svg"
+thumbnail: "/images/interactive/cyber-surfer/thumb.webp"
+hero: "/images/interactive/cyber-surfer/hero.webp"
 description: "A Tempest-style arcade prototype: a perspective-projected, audio-reactive ocean grid you surf down using lane-based controls. Built in vanilla HTML5 Canvas/JS."
 year: "2026"
 role: "Design & development"
