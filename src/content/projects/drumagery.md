@@ -3,16 +3,17 @@ title: "Drumagery"
 section: "interactive"
 thumbnail: "/images/interactive/drumagery/thumb.svg"
 hero: "/images/interactive/drumagery/hero.svg"
-description: "Interactive rhythm/image experiment."
-year: "2025"
-role: "Design, prototype, code"
+description: "A browser-based playable visual instrument. Trigger image-sequence loops, procedural screensavers, and glitch effects live via keyboard, touch, or a MIDI controller. Built with Vite, TypeScript, and PixiJS."
+year: "2026"
+role: "Design & development"
 tags:
   - interactive
-  - prototype
-projectUrl: "https://example.com"
-embedUrl: "https://example.com"
+  - midi
+  - pixijs
+  - vj
+projectUrl: "https://dustooned.github.io/drumagery/"
 featured: true
-order: 1
+order: 3
 ---
 
-Project notes go here. This detail page supports a hero image, an optional embed, and an external project link.
+A MIDI-reactive VJ instrument: five image-sequence loop slots, procedural screensavers on the black keys, and drum-pad bursts, all routed through one input pipeline (keyboard, touch, or Web MIDI) into a shared visual state engine.
