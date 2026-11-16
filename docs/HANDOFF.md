@@ -145,7 +145,6 @@ Still unfinished:
 - Contact page copy
 - CV page text
 - Resume page text
-- newsletter provider/integration (currently a static callout)
 - StayToonedGFX comics site (Walo/Masks external links are placeholders until this exists)
 
 Done:

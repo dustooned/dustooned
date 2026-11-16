@@ -22,7 +22,7 @@ export const SITE_NOTICE = {
 
 export const EXTERNAL_LINKS = {
   sequential: "https://www.staytoonedgfx.com/",
-  education: "https://github.com/dustooned/lbcc-student-work"
+  education: "https://www.lbcc.edu/digitalmedia"
 };
 
 // Homepage hero. Drop a real webm video path into videoSrc when it's ready —

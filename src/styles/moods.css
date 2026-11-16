@@ -185,7 +185,6 @@ h2 {
 
 .page-intro h1,
 .split-heading h2,
-.newsletter-band__copy h2,
 .site-footer h2 {
   position: relative;
   width: fit-content;
@@ -195,8 +194,7 @@ h2 {
 }
 
 .page-intro h1::after,
-.split-heading h2::after,
-.newsletter-band__copy h2::after {
+.split-heading h2::after {
   content: "";
   position: absolute;
   left: 0.02em;
@@ -209,7 +207,6 @@ h2 {
 }
 
 .card,
-.newsletter-band__media,
 .project-hero__image,
 .raw-post-insert,
 .motion-lightbox__panel {
@@ -218,8 +215,7 @@ h2 {
   box-shadow: var(--hand-shadow);
 }
 
-.card,
-.newsletter-band__media {
+.card {
   transform: rotate(var(--hand-frame-tilt));
 }
 
@@ -250,7 +246,6 @@ html[data-visual-mood="clean"] .bubble-field {
 }
 
 html[data-visual-mood="clean"] .page-intro h1::after,
-html[data-visual-mood="clean"] .split-heading h2::after,
-html[data-visual-mood="clean"] .newsletter-band__copy h2::after {
+html[data-visual-mood="clean"] .split-heading h2::after {
   display: none;
 }

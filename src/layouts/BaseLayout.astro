@@ -1,6 +1,5 @@
 ---
 import SiteHeader from "../components/SiteHeader.astro";
-import NewsletterSignup from "../components/NewsletterSignup.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import PageTransition from "../components/PageTransition.astro";
 import BubbleInteraction from "../components/BubbleInteraction.astro";
@@ -35,7 +34,6 @@ const pageTitle = title ? `${title} | ${SITE.title}` : SITE.title;
     <main class="page-main">
       <slot />
     </main>
-    <NewsletterSignup />
     <SiteFooter />
     <MotionLightbox />
     <ImageLightbox />
