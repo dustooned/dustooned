@@ -2,15 +2,27 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageIntro from "../components/PageIntro.astro";
 import { withBase } from "../config/content";
+import { ABOUT_PORTRAIT } from "../config/site";
 ---
 
 <BaseLayout title="About" description="About Dustooned.">
   <div class="content-shell">
-    <PageIntro
-      title="About"
-      eyebrow="¡Saludos!"
-      description="Artist, educator, and community builder working across comics, animation, design, and interactive media."
-    />
+    <div class="about-intro">
+      <PageIntro
+        title="About"
+        eyebrow="¡Saludos!"
+        description="Artist, educator, and community builder working across comics, animation, design, and interactive media."
+      />
+      <figure class="about-portrait">
+        {
+          ABOUT_PORTRAIT.src ? (
+            <img src={withBase(ABOUT_PORTRAIT.src)} alt={ABOUT_PORTRAIT.alt} loading="eager" width="220" height="220" />
+          ) : (
+            <div class="about-portrait__placeholder" role="img" aria-label={ABOUT_PORTRAIT.alt}></div>
+          )
+        }
+      </figure>
+    </div>
     <div class="document-actions" aria-label="Professional documents">
       <a class="button-link" href={withBase("/cv")}>CV</a>
       <a class="button-link" href={withBase("/resume")}>Resume</a>
@@ -19,7 +31,7 @@ import { withBase } from "../config/content";
       <p>
         I'm T'. Queer Cuban-Nicaraguan artist whose work lives at the crossroads of comics, animation, design,
         game/interactive development and education. My projects are rooted in the belief that art is not a
-        privilege but a right, and a tool for empowering community by expression.
+        privilege but a right, and a tool for empowering community through expression.
       </p>
 
       <h2>As a storyteller&hellip;</h2>
@@ -32,8 +44,8 @@ import { withBase } from "../config/content";
 
       <h2>As an educator&hellip;</h2>
       <p>
-        I carry the same commitment into the classroom. Guided by my mantra "Art is Your Right" I design student
-        centered programs that treat creativity as a practice of freedom. I've worked with artists of all ages and
+        I carry the same commitment into the classroom. Guided by my mantra "Art is Your Right" I design
+        student-centered programs that treat creativity as a practice of freedom. I've worked with artists of all ages and
         generations, which has taught me not only what makes learning effective, but also what inspires people to
         reclaim their own creative voice. My goal is to empower the next generation of artists to be not only
         independent creators, but also community builders who see their art as part of a larger cultural
@@ -51,3 +63,54 @@ import { withBase } from "../config/content";
     </div>
   </div>
 </BaseLayout>
+
+<style>
+  .about-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    text-align: center;
+  }
+
+  .about-intro :global(.page-intro) {
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  .about-portrait {
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .about-portrait img,
+  .about-portrait__placeholder {
+    display: block;
+    width: 160px;
+    height: 160px;
+    border-radius: var(--radius-lg);
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+    background: linear-gradient(135deg, var(--color-accent-soft), var(--color-surface-alt));
+  }
+
+  @media (min-width: 768px) {
+    .about-intro {
+      flex-direction: row-reverse;
+      align-items: flex-start;
+      justify-content: space-between;
+      text-align: left;
+      gap: var(--space-7);
+    }
+
+    .about-intro :global(.page-intro) {
+      text-align: left;
+    }
+
+    .about-portrait img,
+    .about-portrait__placeholder {
+      width: 220px;
+      height: 220px;
+    }
+  }
+</style>

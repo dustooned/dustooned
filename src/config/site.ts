@@ -32,6 +32,14 @@ export const HERO = {
   posterImage: ""
 };
 
+// About page portrait. Drop a real photo into public/images/site/ (e.g.
+// "portrait.jpg") and set src below — until then the About page falls back
+// to a placeholder avatar.
+export const ABOUT_PORTRAIT = {
+  src: "",
+  alt: "Portrait of Dustin / T’, the artist and educator behind Dustooned."
+};
+
 export const navItems = [
   { label: "Motion", href: "/motion" },
   { label: "Illustration", href: "/illustration" },
